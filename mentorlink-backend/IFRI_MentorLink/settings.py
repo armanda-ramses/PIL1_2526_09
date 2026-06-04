@@ -37,6 +37,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
     'mentorat', # ici, j'ai ajouté ma premiere app personnelle
     'django.contrib.admin',
     'django.contrib.auth',
