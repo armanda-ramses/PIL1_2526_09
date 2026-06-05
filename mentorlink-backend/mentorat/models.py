@@ -31,10 +31,10 @@ class UtilisateurManager(BaseUserManager):
 # =================================================================
 class FiliereChoices(models.TextChoices):
     IA = 'IA', 'Intelligence Artificielle'
-    IM = 'IM', 'Internet des Objets et Multimédia'
+    IM = 'IM', 'Internet et Multimédia'
     GL = 'GL', 'Génie Logiciel'
     SE_IOT = 'SE&IoT', 'Systèmes Embarqués & IoT'
-    SI = 'SI', 'Systèmes d\'Information'
+    SI = 'SI', 'Sécurité Informatique'
     SIRI = 'SIRI', 'Systèmes d\'Information et Réseaux Informatiques'
 
 class NiveauEtudesChoices(models.TextChoices):
@@ -68,7 +68,7 @@ class JourSemaineChoices(models.TextChoices):
     DIMANCHE = 'Dimanche', 'Dimanche'
 
 # =================================================================
-# MODÈLES DJANGO (Traduction exacte de tes tables SQL)
+# MODÈLES DJANGO
 # =================================================================
 
 # 1. TABLE : utilisateurs
@@ -100,7 +100,6 @@ class Matieres(models.Model):
 
     class Meta:
         db_table = 'matieres'
-
 
 # 3. TABLE : profil_competences
 class ProfilCompetences(models.Model):
@@ -182,3 +181,11 @@ class Messages(models.Model):
         indexes = [
             models.Index(fields=['date_envoi'], name='idx_date_message'),
         ]
+class MatiereFiliereNiveau(models.Model):
+    matiere = models.ForeignKey(Matieres, on_delete=models.CASCADE)
+    filiere = models.CharField(max_length=10, choices=FiliereChoices.choices)
+    niveau = models.CharField(max_length=20, choices=NiveauEtudesChoices.choices)
+
+    class Meta:
+        db_table = 'matiere_filiere_niveau'
+        unique_together = (('matiere', 'filiere', 'niveau'),)        
