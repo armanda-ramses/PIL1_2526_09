@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>MentorLink - Votre Profil Académique</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+     <script src="js/etape3.js"></script>
+    <style>
+        /* Styles pour la gestion des sélections de matières */
+        .tag-pill {
+            display: inline-block;
+            padding: 8px 12px;
+            background-color: #f1f3f5;
+            color: #495057;
+            border-radius: 20px;
+            font-size: 13px;
+            margin: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+            border: 1px solid transparent;
+        }
+        .tag-pill:hover {
+            background-color: #e9ecef;
+        }
+        .tag-pill.active-selection {
+            background-color: #e7f5ff;
+            color: #1c7ed6;
+            border-color: #339af0;
+            font-weight: 500;
+        }
+        
+        /* Barres de résumé en bas */
+        .summary-box {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+        }
+        .summary-box h4 {
+            margin: 0 0 8px 0;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .summary-faible {
+            background-color: #fff5f5;
+            border: 1px solid #ffe3e3;
+            color: #c92a2a;
+        }
+        .summary-fort {
+            background-color: #ebfbee;
+            border: 1px solid #d3f9d8;
+            color: #2b8a3e;
+        }
+        .badge-stored {
+            display: inline-block;
+            padding: 4px 8px;
+            font-size: 12px;
+            border-radius: 4px;
+            margin: 2px;
+            cursor: pointer;
+        }
+        .summary-faible .badge-stored {
+            background-color: #ffe3e3;
+        }
+        .summary-fort .badge-stored {
+            background-color: #d3f9d8;
+        }
+        .badge-stored:hover::after {
+            content: " ✕";
+            color: inherit;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" style="max-width: 620px;">
+        <div class="logo-container">
+            <div class="logo-placeholder">M</div>
+        </div>
+
+        <div class="card">
+            <div class="progress-bar-container">
+                <div class="progress-segment active"></div>
+                <div class="progress-segment active"></div>
+                <div class="progress-segment"></div>
+            </div>
+
+            <div class="card-body" style="padding-top: 24px;">
+                <div class="step-header-top">
+                    <span class="step-label">Étape 3 sur 3</span>
+                    <span class="step-status">Finalisation</span>
+                </div>
+                
+                <h1 class="title" style="text-align: left; margin-top: 16px;">Votre Profil Académique</h1>
+                <p class="subtitle" style="text-align: left; margin-bottom: 24px;">
+                    Détaillez votre parcours actuel pour charger vos cours officiels de l'IFRI.
+                </p>
+
+                <div id="notification-matieres" class="info-banner" style="display: none; margin-bottom: 20px;">
+                    ℹ️ Les matières de votre semestre sont chargées ! Cliquez sur vos matières pour les ajouter à vos points forts ou faibles.
+                </div>
+
+                <form action="inscription_etape4.html" method="GET" id="academicForm">
+                    
+                    <div class="form-row-grid-3">
+                        <div class="form-group">
+                            <label for="study-level">Niveau d'études</label>
+                            <select class="form-control select-custom" id="study-level" required onchange="gérerChangementNiveau()">
+                                <option value="" disabled selected>Niveau</option>
+                                <option value="L1">Licence 1</option>
+                                <option value="L2">Licence 2</option>
+                                <option value="L3">Licence 3</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="filiere">Filière</label>
+                            <select class="form-control select-custom" id="filiere" required onchange="gérerChangementFiliere()">
+                                <option value="" disabled selected>Filière</option>
+                                <option value="GL">Génie Logiciel (GL)</option>
+                                <option value="SI">Sécurité Informatique (SI)</option>
+                                <option value="IM">Internet et Multimédia (IM)</option>
+                                <option value="SIRI">Systèmes d'Info & Réseaux</option>
+                                <option value="IA">Intelligence Artificielle (IA)</option>
+                                <option value="IoT">Systèmes Embarqués & IoT</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="semestre">Semestre</label>
+                            <select class="form-control select-custom" id="semestre" required disabled onchange="chargerMatieres()">
+                                <option value="" disabled selected>Sélectionnez</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 12px;">
+                        <label>Matières de votre semestre</label>
+                        <div class="tags-container" id="subjects-wrapper">
+                            <p id="placeholder-text" style="color: var(--text-muted); font-size: 13px; font-style: italic;">
+                                Remplissez les options ci-dessus pour afficher vos cours.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-row-grid" style="margin: 24px 0;">
+                        <button type="button" class="btn-profile-action btn-faible" onclick="attribuerSelection('faible')">
+                            <span class="icon-plus">+</span> Sélectionner mes points faibles
+                        </button>
+                        <button type="button" class="btn-profile-action btn-fort" onclick="attribuerSelection('fort')">
+                            <span class="icon-plus">+</span> Sélectionner mes points forts
+                        </button>
+                    </div>
+
+                    <div id="box-faible" class="summary-box summary-faible">
+                        <h4> Mes points faibles :</h4>
+                        <div id="list-faibles"></div>
+                    </div>
+
+                    <div id="box-fort" class="summary-box summary-fort">
+                        <h4> Mes points forts :</h4>
+                        <div id="list-forts"></div>
+                    </div>
+
+                    <input type="hidden" name="points_faibles" id="input-faibles">
+                    <input type="hidden" name="points_forts" id="input-forts">
+
+                    <div class="form-group" style="margin-top: 24px;">
+                        <label for="bio">Courte biographie <span style="color: var(--text-muted); font-weight: 400;">(Facultative)</span></label>
+                        <textarea class="form-control textarea-custom" id="bio" rows="4" placeholder="Ex: Étudiant passionné cherchant à s'améliorer en développement web..."></textarea>
+                    </div>
+
+                    <button class="btn-primary" type="submit" style="margin-top: 24px;">Suivant →</button>
+                </form>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="inscription_etape1.html" class="btn-back">Retour à l'étape précédente</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

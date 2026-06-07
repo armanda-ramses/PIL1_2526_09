@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>MentorLink - Connexion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <div class="logo-container">
+            <img src="IFRI.png" alt="Logo IFRI MentorLink" style="max-height: 70px; width: auto; object-fit: contain;">
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h1 class="title">Trouver votre Partenaire</h1>
+                <p class="subtitle">Connectez-vous pour poursuivre votre parcours de mentorat.</p>
+
+                <form action="#" method="POST" id="loginForm">
+                    <div class="form-group">
+                        <label for="identifier">E-mail ou numéro de téléphone</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">✉</span>
+                            <input class="form-control" id="identifier" name="identifier" placeholder="nom@entreprise.com ou +229..." type="text" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <label for="password" style="margin-bottom: 0;">Mot de passe</label>
+                            <a href="#" class="footer-link" style="font-size: 12px;">Mot de passe oublié ?</a>
+                        </div>
+                        <div class="input-wrapper">
+                            <span class="input-icon"></span>
+                            <input class="form-control" id="password" name="password" placeholder="••••••••" type="password" required>
+                        </div>
+                    </div>
+
+                    <button class="btn-primary" type="submit">Se connecter</button>
+                </form>
+
+                <div class="separator">ou continuer avec</div>
+
+                <button type="button" class="btn-google" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;">
+                 <img src="https://www.gstatic.com/images/branding/product/1x/gook_24dp.png" alt="Google Logo" width="18" height="18">
+                    Se connecter avec Google
+                </button>
+            </div>
+
+            <div class="card-footer-bar">
+                Vous n'avez pas encore de compte ? <a href="inscription_etape1.html">Créer un compte</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>MentorLink - Vos Disponibilités</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="js/etape2.js"></script>
+</head>
+<body>
+
+    <div class="container" style="max-width: 600px;">
+        <div class="card">
+            <div class="card-body">
+                
+                <div class="step-header">
+                    <span>Étape 2 sur 3</span>
+                    <span class="active-step">Vos Disponibilités</span>
+                </div>
+
+                <h1 class="title" style="text-align: left;">Définissez vos créneaux horaires</h1>
+                <p class="subtitle" style="text-align: left; margin-bottom: 20px;">
+                    Indiquez les moments où vous êtes disponible pour des sessions de mentorat. Vous pourrez ajuster cela plus tard.
+                </p>
+
+                <h3 class="section-title">Jours de la semaine</h3>
+                <div class="days-grid">
+                    <div class="day-pill selected" data-day="lundi">Lundi</div>
+                    <div class="day-pill selected" data-day="mardi">Mardi</div>
+                    <div class="day-pill" data-day="mercredi">Mercredi</div>
+                    <div class="day-pill selected" data-day="jeudi">Jeudi</div>
+                    <div class="day-pill" data-day="vendredi">Vendredi</div>
+                    <div class="day-pill" data-day="samedi">Samedi</div>
+                    <div class="day-pill" data-day="dimanche">Dimanche</div>
+                </div>
+
+                <h3 class="section-title">Moments de la journée préférés</h3>
+                <div class="moments-grid">
+                    
+                    <div class="moment-card" data-moment="matin">
+                        <div class="moment-checkbox"></div>
+                        <div style="font-size: 20px;"></div>
+                        <div class="moment-title">Matin</div>
+                        <div class="moment-time">08:00 - 12:00</div>
+                    </div>
+
+                    <div class="moment-card selected" data-moment="apres-midi">
+                        <div class="moment-checkbox"></div>
+                        <div style="font-size: 20px;"></div>
+                        <div class="moment-title">Après-midi</div>
+                        <div class="moment-time">13:00 - 17:00</div>
+                    </div>
+
+                    <div class="moment-card" data-moment="soiree">
+                        <div class="moment-checkbox"></div>
+                        <div style="font-size: 20px;"></div>
+                        <div class="moment-title">Soirée</div>
+                        <div class="moment-time">18:00 - 21:00</div>
+                    </div>
+
+                    <div class="moment-card" data-moment="nuit">
+                        <div class="moment-checkbox"></div>
+                        <div style="font-size: 20px;"></div>
+                        <div class="moment-title">Nuit</div>
+                        <div class="moment-time">21:00 - 00:00</div>
+                    </div>
+
+                </div>
+
+                <div class="info-box">
+                    <span></span>
+                    <p>Nous utiliserons ces disponibilités pour proposer des créneaux initiaux à vos mentors/mentorés. Chaque session devra ensuite être confirmée individuellement.</p>
+                </div>
+
+                <div class="navigation-row">
+                    <a href="inscription_etape1.html" class="btn-back">← Retour à l'étape précédente</a>
+                    <button id="btnFinalize" class="btn-primary btn-submit-step">Terminer l'inscription ✓</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
