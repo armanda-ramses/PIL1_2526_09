@@ -373,3 +373,22 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+// Remplace 'btn-terminer' par l'ID exact de ton bouton final
+document.getElementById('btn-terminer').addEventListener('click', () => {
+    
+    // 1. Ton objet de données que tu as construit (ex: payloadConsolide)
+    // Assure-toi qu'il contient bien le nom, les matières, etc.
+    const finalData = {
+        identite: { prenom: document.getElementById('prenom').value }, // ou autre source
+        academique: {
+            matieres: [...document.querySelectorAll('#liste-matières-choisies .badge')].map(b => b.innerText.trim())
+        }
+    };
+
+    // 2. Sauvegarde dans le localStorage
+    // C'est cette clé 'profil_utilisateur' qui permet au Dashboard de te reconnaître
+    localStorage.setItem('profil_utilisateur', JSON.stringify(finalData));
+
+    // 3. Redirection vers le Dashboard
+    window.location.href = 'dashboard.html';
+});
