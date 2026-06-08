@@ -37,7 +37,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders', # Pour la communication avec le frontend
     'rest_framework',
+    'rest_framework_simplejwt',
     'mentorat', # ici, j'ai ajouté ma premiere app personnelle
     'django.contrib.admin',
     'django.contrib.auth',
@@ -48,6 +50,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -129,3 +132,32 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 AUTH_USER_MODEL = 'mentorat.Utilisateur'
+
+CORS_ALLOWED_ORIGINS = [
+   "http://127.0.0.1:5500",
+   "http://lacalhost:5500",
+]
+
+
+# Configuration email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'gpio24139@gmail.com'
+EMAIL_HOST_PASSWORD = 'umaayylqyfzvbxbz'
+DEFAULT_FROM_EMAIL = 'MentorLink <gpio24139@gmail.com>'
+
+# Configuuration de JWT
+from datetime import timedelta
+
+SIMPLE_JWT = {
+   'ACCESS_TOKEN_LIFETIME': timedelta(hours=24),
+   'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+}
+
+REST_FRAMEWORK = {
+   'DEFAULT_AUTHENTICATION_CLASSES': (
+      'rest_framework_simplejwt.authentication.JWTAuthentication',
+   ),
+}

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Utilisateur, ProfilCompetences, Disponibilites, Matieres, MatiereFiliereNiveau
 import re
+from datetime import time
 
 # =========================================================================
 # SERIALIZER D'INSCRIPTION
@@ -130,3 +131,83 @@ class UtilisateurSerializer(serializers.ModelSerializer):
             'id', 'nom', 'prenom', 'email', 'telephone',
             'filiere', 'niveau_etudes', 'photo_profil', 'bio'
         ]
+
+# =================================================================
+# SERIALIZER DE CONNEXION
+# =================================================================       
+class ConnexionSerializer(serializers.Serializer):
+    identifiant = serializers.CharField()
+    password = serializers.CharField(write_only=True)
+
+# =================================================================
+# SERIALIZERS RÉINITIALISATION MOT DE PASSE
+# =================================================================
+class MotDePasseOublieSerializer(serializers.Serializer):
+    identifiant = serializers.CharField()  # email ou téléphone
+
+class VerifierCodeSerializer(serializers.Serializer):
+    identifiant = serializers.CharField()
+    code = serializers.CharField(max_length=6)
+
+class NouveauMotDePasseSerializer(serializers.Serializer):
+    identifiant = serializers.CharField()
+    code = serializers.CharField(max_length=6)
+    nouveau_password = serializers.CharField(min_length=8, write_only=True)
+    confirmer_password = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        if data['nouveau_password'] != data['confirmer_password']:
+            raise serializers.ValidationError({
+                "confirmer_password": "Les mots de passe ne correspondent pas."
+            })
+        return data
+    
+# =================================================================
+# SERIALIZER MODIFICATION DU PROFIL
+# =================================================================
+class ModificationProfilSerializer(serializers.ModelSerializer):
+    competences = CompetenceInscriptionSerializer(many=True, required=False)
+    disponibilites = DisponibiliteInscriptionSerializer(many=True, required=False)
+
+    class Meta:
+        model = Utilisateur
+        fields = [
+            'nom', 'prenom', 'bio', 'photo_profil',
+            'filiere', 'niveau_etudes', 'competences', 'disponibilites'
+        ]
+
+    def update(self, instance, validated_data):
+        competences = validated_data.pop('competences', None)
+        disponibilites = validated_data.pop('disponibilites', None)    
+
+        # Mettre à jour les champs simples
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()    
+
+        # Mettre à jour les compétences si fournies
+        if competences is not None:
+            ProfilCompetences.objects.filter(utilisateur_id=instance.id).delete()
+            for comp in competences:
+                ProfilCompetences.objects.create(
+                    utilisateur=instance,
+                    matiere_id=comp['id_matiere'],
+                    type_competence=comp['type_competence']
+                )
+
+        # Mettre à jour les disponibilites
+        if disponibilites is not None:
+            Disponibilites.objects.filter(utilisateur_id=instance.id).delete()
+            from datetime import time
+
+            for dispo in disponibilites:
+                heure_debut = dispo['heure_debut']
+                heure_fin = dispo['heure_fin']
+                Disponibilites.objects.create(
+                utilisateur=instance,
+                jour_semaine=dispo['jour_semaine'],
+                heure_debut=heure_debut if isinstance(heure_debut, time) else time.fromisoformat(str(heure_debut)),
+                heure_fin=heure_fin if isinstance(heure_fin, time) else time.fromisoformat(str(heure_fin))
+    )
+
+        return instance        

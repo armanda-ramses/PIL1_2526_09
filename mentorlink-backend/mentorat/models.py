@@ -189,3 +189,13 @@ class MatiereFiliereNiveau(models.Model):
     class Meta:
         db_table = 'matiere_filiere_niveau'
         unique_together = (('matiere', 'filiere', 'niveau'),)        
+
+# 9. TABLE : codes_reinitialisation
+class CodeReinitialisation(models.Model):
+    utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
+    code = models.CharField(max_length=6)
+    date_expiration = models.DateTimeField()
+    utilise = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = 'codes_reinitialisation'
