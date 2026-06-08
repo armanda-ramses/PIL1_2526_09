@@ -494,3 +494,622 @@ body {
         gap: 0;
     }
 }
+
+/* ==========================================================================
+   1. VARIABLES & CHARTE GRAPHIQUE (Logique des couleurs)
+   ========================================================================== */
+:root {
+    --primary-color: #0056b3;       /* Bleu principal (IFRI / Confiance) */
+    --primary-dark: #003d82;        /* Bleu foncé pour les survols */
+    --primary-light: #e6f0fa;       /* Fond bleu très clair pour les focus */
+    
+    --bg-app: #f8f9fa;              /* Fond général de l'application (Gris très clair) */
+    --bg-card: #ffffff;             /* Fond des cartes et conteneurs */
+    --border-color: #e2e8f0;        /* Couleur standard des bordures et séparateurs */
+    
+    --text-main: #1e293b;           /* Texte principal (Presque noir pour l'accessibilité) */
+    --text-muted: #64748b;          /* Texte secondaire / Légendes (Gris) */
+    
+    /* Couleurs Thématiques des KPI */
+    --accent: #ff9800;              /* Orange pour les étoiles / Favoris */
+    --theme-blue: #0066cc;          /* KPI Info / Filière */
+    --theme-green: #2ec4b6;         /* KPI Succès / Rôle Statut */
+    --theme-purple: #7209b7;        /* KPI Créneaux Actifs */
+}
+
+/* ==========================================================================
+   2. REINITIALISATION & LAYOUT GENERAL
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-app);
+    color: var(--text-main);
+    overflow-x: hidden;
+}
+
+.app-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+.dashboard-layout {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+/* Utilitaire indispensable pour masquer les onglets non actifs via le JS */
+.hidden {
+    display: none !important;
+}
+
+/* ==========================================================================
+   3. SIDEBAR (Navigation Gauche)
+   ========================================================================== */
+.app-sidebar {
+    width: 280px;
+    background-color: var(--bg-card);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px 16px;
+    flex-shrink: 0;
+}
+
+.sidebar-top-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.brand-logo {
+    background-color: var(--primary-color);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.brand-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+/* Menu de navigation */
+.sidebar-menu {
+    list-style: none;
+    margin-top: 24px;
+    flex-grow: 1;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    color: var(--text-muted);
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 8px;
+    transition: all 0.2s ease;
+}
+
+.menu-item i {
+    font-size: 1.1rem;
+    width: 20px;
+}
+
+.menu-item:hover {
+    background-color: var(--bg-app);
+    color: var(--text-main);
+}
+
+.menu-item.active {
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.badge-alert-count {
+    margin-left: auto;
+    background-color: #ef4444;
+    color: white;
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 700;
+}
+
+/* Ancre Utilisateur en bas de Sidebar */
+.sidebar-user-anchor {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+}
+
+.user-avatar-placeholder {
+    width: 44px;
+    height: 44px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.user-anchor-meta h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.sidebar-user-anchor span {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* ==========================================================================
+   4. ZONE DE CONTENU PRINCIPAL
+   ========================================================================== */
+.app-content-body {
+    flex-grow: 1;
+    padding: 40px;
+    overflow-y: auto;
+    background-color: var(--bg-app);
+}
+
+.pane-header-greeting {
+    margin-bottom: 32px;
+}
+
+.pane-header-greeting h2 {
+    font-size: 1.8rem;
+    color: var(--text-main);
+    margin-bottom: 6px;
+}
+
+.pane-header-greeting p {
+    color: var(--text-muted);
+}
+
+/* ==========================================================================
+   5. GRILLE DES KPI (Cartes du Haut)
+   ========================================================================== */
+.kpi-dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.kpi-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.kpi-icon-container {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+/* Logique de couleurs des catégories KPI */
+.kpi-icon-container.blue-theme { background-color: rgba(0, 102, 204, 0.1); color: var(--theme-blue); }
+.kpi-icon-container.green-theme { background-color: rgba(46, 196, 182, 0.1); color: var(--theme-green); }
+.kpi-icon-container.purple-theme { background-color: rgba(112, 9, 183, 0.1); color: var(--theme-purple); }
+
+.kpi-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.kpi-counter {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.kpi-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* Layout 2 colonnes (Accueil) */
+.dashboard-split-columns {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 24px;
+}
+
+.split-column-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.split-column-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Badges dynamiques des matières */
+.skill-micro-tag {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: rgba(0, 86, 179, 0.08);
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+/* ==========================================================================
+   6. LES BOUTONS ET COMPOSANTS DE FORMULAIRE
+   ========================================================================== */
+.btn-primary, .btn-save-settings {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.2s;
+}
+
+.btn-primary:hover, .btn-save-settings:hover {
+    background-color: var(--primary-dark);
+}
+
+/* ==========================================================================
+   7. TABLEAU DES CRENEAUX (Matrice Hebdomadaire)
+   ========================================================================== */
+.table-overflow-wrapper {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.matrix-schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.matrix-schedule-table th, .matrix-schedule-table td {
+    padding: 16px;
+    border-bottom: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+}
+
+.matrix-schedule-table th {
+    background-color: #f1f5f9;
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.row-header-slot {
+    font-weight: 600;
+    background-color: #f8f9fa;
+    color: var(--text-muted);
+}
+
+/* Cases à cocher personnalisées (Style lecture seule propre) */
+.matrix-schedule-table input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-color);
+    cursor: not-allowed;
+}
+
+/* ==========================================================================
+   8. FORMULAIRE DE PROFIL & TILES RADIO
+   ========================================================================== */
+.profile-dashboard-wrapper {
+    display: grid;
+    grid-template-columns: 0.7fr 1.3fr;
+    gap: 32px;
+}
+
+.profile-left-summary-panel {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.profile-picture-big {
+    width: 100px;
+    height: 100px;
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+    font-size: 2.2rem;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    border: 3px solid var(--primary-color);
+}
+
+.verification-badge {
+    margin-top: 16px;
+    background-color: rgba(46, 196, 182, 0.1);
+    color: #118ab2;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.profile-right-editable-forms {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 32px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.form-group input {
+    padding: 10px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: #f1f5f9; /* Indique l'aspect bloqué / lecture seule */
+    color: var(--text-main);
+    font-size: 0.95rem;
+}
+
+/* Grille des tuiles de spécialités */
+.specialty-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.specialty-option input[type="radio"] {
+    display: none;
+}
+
+.option-tile {
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+    cursor: not-allowed;
+    background-color: #f8f9fa;
+    transition: all 0.2s;
+}
+
+.option-tile .abbr {
+    display: block;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+}
+
+.option-tile .full-name {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* Quand le bouton radio invisible est sélectionné par le JS */
+.specialty-option input[type="radio"]:checked + .option-tile {
+    border-color: var(--primary-color);
+    background-color: var(--primary-light);
+}
+.specialty-option input[type="radio"]:checked + .option-tile .abbr {
+    color: var(--primary-color);
+}
+
+/* ==========================================================================
+   9. INTERFACE MESSAGERIE MODERNE (Système Biface)
+   ========================================================================== */
+.messaging-two-columns-container {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    height: 600px;
+    overflow: hidden;
+}
+
+.conversations-sidebar-list {
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-search-box {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid var(--border-color);
+    gap: 10px;
+}
+
+.sidebar-search-box input {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+}
+
+.conversation-row-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.conversation-row-item.active {
+    background-color: var(--primary-light);
+}
+
+.row-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.active-chat-window {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #f1f5f9;
+}
+
+.chat-window-top-bar {
+    background-color: var(--bg-card);
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.online-indicator-badge {
+    font-size: 0.8rem;
+    color: #2ec4b6;
+    font-weight: 600;
+}
+
+.chat-messages-feed-area {
+    flex-grow: 1;
+    padding: 24px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.message-bubble {
+    max-width: 70%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    position: relative;
+}
+
+.message-bubble.incoming-bubble {
+    background-color: var(--bg-card);
+    align-self: flex-start;
+    color: var(--text-main);
+}
+
+.message-bubble.outgoing-bubble {
+    background-color: var(--primary-color);
+    color: white;
+    align-self: flex-end;
+}
+
+.message-bubble.system-notice {
+    background-color: rgba(0,0,0,0.05);
+    color: var(--text-muted);
+    align-self: center;
+    font-size: 0.8rem;
+}
+
+.bubble-timestamp {
+    display: block;
+    font-size: 0.7rem;
+    margin-top: 4px;
+    text-align: right;
+    opacity: 0.7;
+}
+
+.chat-input-dock {
+    padding: 16px;
+    background-color: var(--bg-card);
+    display: flex;
+    gap: 12px;
+}
+
+.chat-input-dock input {
+    flex-grow: 1;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    outline: none;
+}
+
+.btn-send-message {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    width: 44px;
+    border-radius: 8px;
+    cursor: pointer;
+}
