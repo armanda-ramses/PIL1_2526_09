@@ -1,12 +1,12 @@
 from django.urls import path
 from .views import (
    InscriptionView, 
-    MatieresView, 
-    ConnexionView,
-    MotDePasseOublieView,
-    VerifierCodeView,
-    NouveauMotDePasseView,
-    ModificationProfilView
+   MatieresView, 
+   ConnexionView,
+   MotDePasseOublieView,
+   VerifierCodeView,
+   NouveauMotDePasseView,
+   ModificationProfilView
 )
 
 urlpatterns = [
