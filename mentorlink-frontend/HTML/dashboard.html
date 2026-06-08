@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MentorLink - Mon Dashboard Réel</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <main id="app-dashboard" class="dashboard-layout">
+            
+            <aside class="app-sidebar">
+                <div class="sidebar-top-brand">
+                    <div class="brand-logo"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <span class="brand-name">MentorLink</span>
+                </div>
+                
+                <ul class="sidebar-menu">
+                    <li class="menu-item active" data-target="pane-home">
+                        <i class="fa-solid fa-house"></i> Accueil
+                    </li>
+                    <li class="menu-item" data-target="pane-messages">
+                        <i class="fa-solid fa-comment-dots"></i> Messagerie 
+                        <span class="badge-alert-count">0</span>
+                    </li>
+                    <li class="menu-item" data-target="pane-directory">
+                        <i class="fa-solid fa-address-book"></i> Annuaire Mentors
+                    </li>
+                    <li class="menu-item" data-target="pane-schedule">
+                        <i class="fa-solid fa-calendar-days"></i> Mes Créneaux
+                    </li>
+                    <li class="menu-item" data-target="pane-profile">
+                        <i class="fa-solid fa-user-gear"></i> Mon Profil
+                    </li>
+                </ul>
+
+                <div class="sidebar-user-anchor">
+                    <div class="user-avatar-placeholder" id="sidebar-avatar">--</div>
+                    <div class="user-anchor-meta">
+                        <h4 class="dynamic-username" id="sidebar-username">Chargement...</h4>
+                        <span id="sidebar-role">...</span>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="app-content-body">
+                
+                <div id="pane-home" class="tab-pane-content">
+                    <div class="pane-header-greeting">
+                        <h2 id="welcome-title">Ravi de vous revoir !</h2>
+                        <p>Voici l'état actuel de votre profil et de vos préférences pour le mentorat.</p>
+                    </div>
+
+                    <div class="kpi-dashboard-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-icon-container blue-theme"><i class="fa-solid fa-id-card"></i></div>
+                            <div class="kpi-details">
+                                <span class="kpi-counter" id="kpi-filiere">--</span>
+                                <span class="kpi-label">Votre Filière</span>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-container green-theme"><i class="fa-solid fa-user-graduate"></i></div>
+                            <div class="kpi-details">
+                                <span class="kpi-counter" id="kpi-status-role">--</span>
+                                <span class="kpi-label">Statut Système</span>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-container purple-theme"><i class="fa-solid fa-clock"></i></div>
+                            <div class="kpi-details">
+                                <span class="kpi-counter" id="kpi-slots-count">0</span>
+                                <span class="kpi-label">Créneaux Actifs</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-split-columns">
+                        <div class="split-column-card">
+                            <h3 id="skills-box-title"><i class="fa-solid fa-star" style="color: var(--accent);"></i> Vos Compétences Cibles</h3>
+                            <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">Voici les matières sélectionnées lors de votre inscription :</p>
+                            
+                            <div id="user-skills-list" class="directory-skills-set" style="gap: 8px; display: flex; flex-wrap: wrap; margin-bottom: 20px;">
+                                </div>
+                        </div>
+
+                        <div class="split-column-card">
+                            <h3><i class="fa-solid fa-circle-info"></i> Informations d'Inscription</h3>
+                            <ul style="list-style: none; padding: 0; line-height: 2;">
+                                <li><strong>Email :</strong> <span id="info-email">...</span></li>
+                                <li><strong>Contact :</strong> <span id="info-phone">...</span></li>
+                                <li><strong>Année d'étude :</strong> <span id="info-annee">...</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="pane-messages" class="tab-pane-content hidden">
+                    <div class="messaging-two-columns-container">
+                        <div class="conversations-sidebar-list">
+                            <div class="sidebar-search-box"><i class="fa-solid fa-magnifying-glass"></i><input type="text" placeholder="Rechercher..."></div>
+                            <div class="conversations-stack">
+                                <div class="conversation-row-item active">
+                                    <div class="row-avatar text-mentor">IFRI</div>
+                                    <div class="row-meta-content">
+                                        <div class="name-and-timestamp"><h6>Support MentorLink</h6><span class="timestamp">Maintenant</span></div>
+                                        <p class="last-message-preview">Bienvenue sur l'application officielle de l'IFRI !</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="active-chat-window">
+                            <div class="chat-window-top-bar"><div class="active-target-meta"><h3>Système MentorLink</h3><span class="online-indicator-badge">● En ligne</span></div></div>
+                            <div class="chat-messages-feed-area">
+                                <div class="message-bubble system-notice">Votre espace de discussion est prêt.</div>
+                                <div class="message-bubble incoming-bubble">Bonjour ! Vos modifications d'inscription ont bien été prises en compte par la base locale.</div>
+                            </div>
+                            <div class="chat-input-dock">
+                                <input type="text" placeholder="Écrivez un message...">
+                                <button class="btn-send-message"><i class="fa-solid fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="pane-directory" class="tab-pane-content hidden">
+                    <div class="pane-title-block">
+                        <h2>Annuaire des Mentors Volontaires</h2>
+                        <p>Voici les mentors de l'IFRI filtrés selon vos besoins ou votre filière.</p>
+                    </div>
+                    <div class="directory-cards-grid" id="directory-container">
+                        </div>
+                </div>
+
+                <div id="pane-schedule" class="tab-pane-content hidden">
+                    <div class="pane-title-block">
+                        <h2>Vos Créneaux de Disponibilité</h2>
+                        <p>Voici le récapitulatif des heures de présence que vous avez cochées à l'étape 3.</p>
+                    </div>
+                    <div class="table-overflow-wrapper">
+                        <table class="matrix-schedule-table">
+                            <thead>
+                                <tr>
+                                    <th>Heures</th>
+                                    <th>Lundi</th>
+                                    <th>Mardi</th>
+                                    <th>Mercredi</th>
+                                    <th>Jeudi</th>
+                                    <th>Vendredi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="schedule-matrix-body">
+                                <tr>
+                                    <td class="row-header-slot">08h - 10h</td>
+                                    <td><input type="checkbox" id="check-lundi-08" disabled></td>
+                                    <td><input type="checkbox" id="check-mardi-08" disabled></td>
+                                    <td><input type="checkbox" id="check-mercredi-08" disabled></td>
+                                    <td><input type="checkbox" id="check-jeudi-08" disabled></td>
+                                    <td><input type="checkbox" id="check-vendredi-08" disabled></td>
+                                </tr>
+                                <tr>
+                                    <td class="row-header-slot">10h - 12h</td>
+                                    <td><input type="checkbox" id="check-lundi-10" disabled></td>
+                                    <td><input type="checkbox" id="check-mardi-10" disabled></td>
+                                    <td><input type="checkbox" id="check-mercredi-10" disabled></td>
+                                    <td><input type="checkbox" id="check-jeudi-10" disabled></td>
+                                    <td><input type="checkbox" id="check-vendredi-10" disabled></td>
+                                </tr>
+                                <tr>
+                                    <td class="row-header-slot">14h - 16h</td>
+                                    <td><input type="checkbox" id="check-lundi-14" disabled></td>
+                                    <td><input type="checkbox" id="check-mardi-14" disabled></td>
+                                    <td><input type="checkbox" id="check-mercredi-14" disabled></td>
+                                    <td><input type="checkbox" id="check-jeudi-14" disabled></td>
+                                    <td><input type="checkbox" id="check-vendredi-14" disabled></td>
+                                </tr>
+                                <tr>
+                                    <td class="row-header-slot">16h - 18h</td>
+                                    <td><input type="checkbox" id="check-lundi-16" disabled></td>
+                                    <td><input type="checkbox" id="check-mardi-16" disabled></td>
+                                    <td><input type="checkbox" id="check-mercredi-16" disabled></td>
+                                    <td><input type="checkbox" id="check-jeudi-16" disabled></td>
+                                    <td><input type="checkbox" id="check-vendredi-16" disabled></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="pane-profile" class="tab-pane-content hidden">
+                    <div class="profile-dashboard-wrapper">
+                        <div class="profile-left-summary-panel">
+                            <div class="profile-picture-big dynamic-user-firstname" id="profile-avatar">--</div>
+                            <h3 class="dynamic-profile-fullname" id="profile-fullname">...</h3>
+                            <p class="profile-static-email" id="profile-display-email">...</p>
+                            <span class="verification-badge"><i class="fa-solid fa-user-shield"></i> Profil IFRI Vérifié</span>
+                        </div>
+                        
+                        <div class="profile-right-editable-forms">
+                            <h4>Vos paramètres enregistrés</h4>
+                            <form id="app-profile-update-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Prénom</label>
+                                        <input type="text" id="edit-profile-firstname" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Nom</label>
+                                        <input type="text" id="edit-profile-lastname" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" id="edit-profile-email" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Téléphone</label>
+                                        <input type="tel" id="edit-profile-phone" readonly>
+                                    </div>
+                                </div>
+                                <div class="specialty-selection" style="margin-bottom: 20px;">
+                                    <span class="section-title-label">Votre filière d'étude actuelle :</span>
+                                    <div class="specialty-grid">
+                                        <label class="specialty-option">
+                                            <input type="radio" name="edit-filiere" value="GL" id="radio-gl" disabled>
+                                            <div class="option-tile"><span class="abbr">GL</span><span class="full-name">Génie Logiciel</span></div>
+                                        </label>
+                                        <label class="specialty-option">
+                                            <input type="radio" name="edit-filiere" value="SRI" id="radio-sri" disabled>
+                                            <div class="option-tile"><span class="abbr">SRI</span><span class="full-name">Sécurité & Réseaux</span></div>
+                                        </label>
+                                        <label class="specialty-option">
+                                            <input type="radio" name="edit-filiere" value="DATA" id="radio-data" disabled>
+                                            <div class="option-tile"><span class="abbr">DATA</span><span class="full-name">Data Science / IA</span></div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
