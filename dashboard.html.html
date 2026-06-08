@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MentorLink - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <main id="app-dashboard" class="dashboard-layout">
+            
+            <aside class="app-sidebar">
+                <div class="sidebar-top-brand">
+                    <div class="brand-logo"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <span class="brand-name">MentorLink</span>
+                </div>
+                
+                <ul class="sidebar-menu">
+                    <li class="menu-item active" data-target="pane-home">
+                        <i class="fa-solid fa-house"></i> Accueil
+                    </li>
+                    <li class="menu-item" data-target="pane-messages">
+                        <i class="fa-solid fa-comment-dots"></i> Messagerie 
+                        <span class="badge-alert-count">2</span>
+                    </li>
+                    <li class="menu-item" data-target="pane-directory">
+                        <i class="fa-solid fa-address-book"></i> Annuaire Mentors
+                    </li>
+                    <li class="menu-item" data-target="pane-schedule">
+                        <i class="fa-solid fa-calendar-days"></i> Mes Créneaux
+                    </li>
+                    <li class="menu-item" data-target="pane-profile">
+                        <i class="fa-solid fa-user-gear"></i> Mon Profil
+                    </li>
+                </ul>
+
+                <div class="sidebar-user-anchor">
+                    <div class="user-avatar-placeholder">HP</div>
+                    <div class="user-anchor-meta">
+                        <h4 class="dynamic-username">Utilisateur</h4>
+                        <span>Étudiant</span>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="app-content-body">
+                
+                <div id="pane-home" class="tab-pane-content">
+                    <div class="pane-header-greeting">
+                        <h2>Ravi de vous revoir !</h2>
+                        <p>Voici un aperçu de vos activités de mentorat aujourd'hui.</p>
+                    </div>
+
+                    <div class="kpi-dashboard-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-icon-container blue-theme"><i class="fa-solid fa-comments"></i></div>
+                            <div class="kpi-details">
+                                <span class="kpi-counter">12</span>
+                                <span class="kpi-label">Messages échangés</span>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-container green-theme"><i class="fa-solid fa-handshake"></i></div>
+                            <div class="kpi-details">
+                                <span class="kpi-counter">85%</span>
+                                <span class="kpi-label">Taux d'affinité moyen</span>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-container purple-theme"><i class="fa-solid fa-calendar-check"></i></div>
+                            <div class="kpi-details">
+                                <span class="kpi-counter">2</span>
+                                <span class="kpi-label">Sessions programmées</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-split-columns">
+                        <div class="split-column-card">
+                            <h3><i class="fa-solid fa-star" style="color: var(--accent);"></i> Votre Match Parfait</h3>
+                            <div class="match-profile-header">
+                                <div class="match-avatar">MD</div>
+                                <div class="match-user-meta">
+                                    <h4>Moussa Diop</h4>
+                                    <span class="match-tags">Master 2 (GL) • Expert Base de données</span>
+                                </div>
+                            </div>
+                            <div class="affinity-bar-section">
+                                <div class="affinity-score-text">Affinité académique : <strong>94%</strong></div>
+                                <div class="progress-bar-track">
+                                    <div class="progress-bar-fill-indicator" style="width: 94%;"></div>
+                                </div>
+                            </div>
+                            <p class="matching-reason-text">
+                                "Moussa excelle en algèbre relationnelle et normalisation (1NF, 2NF, 3NF). Il a déjà validé les projets PostgreSQL de l'année supérieure."
+                            </p>
+                            <button class="btn-primary" style="width: 100%;"><i class="fa-solid fa-paper-plane"></i> Discuter avec lui</button>
+                        </div>
+
+                        <div class="split-column-card">
+                            <h3><i class="fa-solid fa-clock"></i> Prochaines Sessions</h3>
+                            <div class="mini-timeline-list">
+                                <div class="timeline-item">
+                                    <div class="timeline-date-badge">
+                                        <span class="day">10</span>
+                                        <span class="month">Juin</span>
+                                    </div>
+                                    <div class="timeline-info-details">
+                                        <h5>Révision Algèbre Relationnelle</h5>
+                                        <p>Avec Moussa Diop • 14h00 - 16h00</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="pane-messages" class="tab-pane-content hidden">
+                    <div class="messaging-two-columns-container">
+                        
+                        <div class="conversations-sidebar-list">
+                            <div class="sidebar-search-box">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" placeholder="Rechercher un mentor...">
+                            </div>
+                            <div class="conversations-stack">
+                                <div class="conversation-row-item active">
+                                    <div class="row-avatar text-mentor">MD</div>
+                                    <div class="row-meta-content">
+                                        <div class="name-and-timestamp">
+                                            <h6>Moussa Diop</h6>
+                                            <span class="timestamp">14:32</span>
+                                        </div>
+                                        <p class="last-message-preview">Ça marche, on se capte jeudi pour l'exercice SQL !</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="active-chat-window">
+                            <div class="chat-window-top-bar">
+                                <div class="active-target-meta">
+                                    <h3>Moussa Diop</h3>
+                                    <span class="online-indicator-badge">● En ligne (Filière GL)</span>
+                                </div>
+                            </div>
+
+                            <div class="chat-messages-feed-area">
+                                <div class="message-bubble system-notice">Le salon de discussion sécurisé a été ouvert</div>
+                                <div class="message-bubble incoming-bubble">
+                                    Salut ! J'ai vu que ton groupe bosse sur la jointure de tables PostgreSQL. Tu t'en sors ?
+                                    <span class="bubble-timestamp">14:30</span>
+                                </div>
+                                <div class="message-bubble outgoing-bubble">
+                                    Hello ! C'est un peu dur sur les sous-requêtes imbriquées, j'avoue.
+                                    <span class="bubble-timestamp">14:31</span>
+                                </div>
+                                <div class="message-bubble incoming-bubble">
+                                    Ça marche, on se capte jeudi pour l'exercice SQL !
+                                    <span class="bubble-timestamp">14:32</span>
+                                </div>
+                            </div>
+
+                            <div class="chat-input-dock">
+                                <input type="text" placeholder="Écrivez votre message ici...">
+                                <button class="btn-send-message"><i class="fa-solid fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="pane-directory" class="tab-pane-content hidden">
+                    <div class="pane-title-block">
+                        <h2>Annuaire des Mentors Volontaires</h2>
+                        <p>Trouvez un étudiant de niveau supérieur prêt à vous aider.</p>
+                    </div>
+
+                    <div class="directory-cards-grid">
+                        <div class="mentor-directory-card">
+                            <div class="directory-avatar-large">MD</div>
+                            <h4>Moussa Diop</h4>
+                            <span class="filiere-pill-tag">Génie Logiciel (GL)</span>
+                            <div class="directory-skills-set">
+                                <span class="skill-micro-tag">PostgreSQL</span>
+                                <span class="skill-micro-tag">Algèbre relationnelle</span>
+                            </div>
+                            <button class="btn-view-profile-modal">Voir les disponibilités</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="pane-schedule" class="tab-pane-content hidden">
+                    <div class="pane-title-block">
+                        <h2>Mes Créneaux de Disponibilité</h2>
+                        <p>Cochez les heures où vous êtes disponible pour planifier des révisions.</p>
+                    </div>
+
+                    <div class="table-overflow-wrapper">
+                        <table class="matrix-schedule-table">
+                            <thead>
+                                <tr>
+                                    <th>Heures</th>
+                                    <th>Lundi</th>
+                                    <th>Mardi</th>
+                                    <th>Mercredi</th>
+                                    <th>Jeudi</th>
+                                    <th>Vendredi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="row-header-slot">08h - 10h</td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox" checked></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox" checked></td>
+                                    <td><input type="checkbox"></td>
+                                </tr>
+                                <tr>
+                                    <td class="row-header-slot">14h - 16h</td>
+                                    <td><input type="checkbox" checked></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox" checked></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="pane-profile" class="tab-pane-content hidden">
+                    <div class="profile-dashboard-wrapper">
+                        
+                        <div class="profile-left-summary-panel">
+                            <div class="profile-picture-big dynamic-user-firstname">U</div>
+                            <h3 class="dynamic-profile-fullname">Votre Nom</h3>
+                            <p class="profile-static-email" id="profile-display-email">votre.nom@ecole.com</p>
+                            <span class="verification-badge"><i class="fa-solid fa-user-shield"></i> Compte Étudiant Verified</span>
+                        </div>
+                        
+                        <div class="profile-right-editable-forms">
+                            <h4>Paramètres de votre Profil Académique</h4>
+                            
+                            <form id="app-profile-update-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="edit-profile-firstname">Modifier le Prénom</label>
+                                        <input type="text" id="edit-profile-firstname" placeholder="Ex: Moussa" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-profile-lastname">Modifier le Nom</label>
+                                        <input type="text" id="edit-profile-lastname" placeholder="Ex: Diop" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="edit-profile-email">Adresse Email Académique</label>
+                                        <input type="email" id="edit-profile-email" placeholder="votre.nom@ecole.com" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-profile-phone">Numéro de Téléphone</label>
+                                        <input type="tel" id="edit-profile-phone" placeholder="Ex: +229 01 00 00 00 00">
+                                    </div>
+                                </div>
+
+                                <div class="specialty-selection" style="margin-bottom: 20px;">
+                                    <span class="section-title-label">Votre Filière d'étude :</span>
+                                    <div class="specialty-grid">
+                                        <label class="specialty-option">
+                                            <input type="radio" name="edit-filiere" value="GL" checked>
+                                            <div class="option-tile">
+                                                <span class="abbr">GL</span>
+                                                <span class="full-name">Génie Logiciel</span>
+                                            </div>
+                                        </label>
+                                        <label class="specialty-option">
+                                            <input type="radio" name="edit-filiere" value="SRI">
+                                            <div class="option-tile">
+                                                <span class="abbr">SRI</span>
+                                                <span class="full-name">Sécurité & Réseaux</span>
+                                            </div>
+                                        </label>
+                                        <label class="specialty-option">
+                                            <input type="radio" name="edit-filiere" value="DATA">
+                                            <div class="option-tile">
+                                                <span class="abbr">DATA</span>
+                                                <span class="full-name">Data Science / IA</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn-save-settings"><i class="fa-solid fa-floppy-disk"></i> Enregistrer les modifications</button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // 1. CHANGEMENT D'ONGLET SIDEBAR
+        const menuItems = document.querySelectorAll(".sidebar-menu .menu-item");
+        const tabPanes = document.querySelectorAll(".tab-pane-content");
+
+        menuItems.forEach(item => {
+            item.addEventListener("click", function () {
+                // Gestion de la classe active sur la sidebar
+                menuItems.forEach(menu => menu.classList.remove("active"));
+                this.classList.add("active");
+
+                // Gestion de l'affichage des écrans (Panes)
+                tabPanes.forEach(pane => pane.classList.add("hidden"));
+                const targetId = this.getAttribute("data-target");
+                const targetPane = document.getElementById(targetId);
+
+                if (targetPane) {
+                    targetPane.classList.remove("hidden");
+                }
+            });
+        });
+
+        // 2. ENVOI DE MESSAGE SIMULÉ (MESSAGERIE)
+        const chatInput = document.querySelector(".chat-input-dock input");
+        const sendButton = document.querySelector(".btn-send-message");
+        const chatFeed = document.querySelector(".chat-messages-feed-area");
+
+        function sendMessage() {
+            const messageText = chatInput.value.trim();
+            if (messageText !== "") {
+                const messageBubble = document.createElement("div");
+                messageBubble.classList.add("message-bubble", "outgoing-bubble");
+                
+                const now = new Date();
+                const timeString = now.getHours().toString().padStart(2, '0') + ":" + 
+                                   now.getMinutes().toString().padStart(2, '0');
+
+                messageBubble.innerHTML = `${messageText}<span class="bubble-timestamp">${timeString}</span>`;
+                chatFeed.appendChild(messageBubble);
+                chatInput.value = "";
+                chatFeed.scrollTop = chatFeed.scrollHeight;
+
+                // Simulation d'un retour automatique du mentor après 1.5s
+                setTimeout(() => {
+                    const responseBubble = document.createElement("div");
+                    responseBubble.classList.add("message-bubble", "incoming-bubble");
+                    responseBubble.innerHTML = `Bien reçu ! On check ça ensemble.<span class="bubble-timestamp">${timeString}</span>`;
+                    chatFeed.appendChild(responseBubble);
+                    chatFeed.scrollTop = chatFeed.scrollHeight;
+                }, 1500);
+            }
+        }
+
+        if (sendButton && chatInput) {
+            sendButton.addEventListener("click", sendMessage);
+            chatInput.addEventListener("keypress", function (e) {
+                if (e.key === "Enter") sendMessage();
+            });
+        }
+    });
+    </script>
+</body>
+</html>
