@@ -1,8 +1,8 @@
 // ==========================================
 // 1. VARIABLES GLOBALES
 // ==========================================
-let choixForts = [];   // [{id_matiere: 1, nom_matiere: "..."}, ...]
-let choixFaibles = []; // [{id_matiere: 1, nom_matiere: "..."}, ...]
+let choixForts = [];   // [{id_matiere: 1, nom: "..."}, ...]
+let choixFaibles = []; // [{id_matiere: 1, nom: "..."}, ...]
 let toutesLesMatieres = []; // Liste complète chargée depuis le backend
 
 // ==========================================
@@ -11,66 +11,25 @@ let toutesLesMatieres = []; // Liste complète chargée depuis le backend
 async function chargerMatieres() {
     const filiere = document.getElementById('filiere')?.value;
     const niveau = document.getElementById('study-level')?.value;
-    const semestre = document.getElementById('semestre')?.value;
 
-    // On ne lance l'appel que si les 3 critères essentiels sont sélectionnés
-    if (!filiere || !niveau || !semestre) return;
+    if (!filiere || !niveau) return;
 
     try {
         const response = await fetch(
-            `http://127.0.0.1:8000/api/auth/matieres/?filiere=${filiere}&niveau=${niveau}&semestre=${semestre}`
+            `http://127.0.0.1:8000/api/auth/matieres/?filiere=${filiere}&niveau=${niveau}`
         );
         const data = await response.json();
         toutesLesMatieres = data;
         majListesDeroulantesMatieres();
     } catch (error) {
         console.error("Erreur chargement matières:", error);
+        alert("Erreur de connexion au serveur.");
     }
 }
 
 // ==========================================
-// 3. GESTION DE L'INTERFACE DYNAMIQUE
+// 3. GESTION DE L'INTERFACE
 // ==========================================
-function gererChangementNiveau() {
-    const niveau = document.getElementById('study-level').value;
-    const selectSemestre = document.getElementById('semestre');
-    
-    // Réinitialisation du sélecteur de semestre
-    selectSemestre.innerHTML = '<option value="" disabled selected>Sélectionnez</option>';
-    
-    if (!niveau) {
-        selectSemestre.disabled = true;
-        return;
-    }
-
-    selectSemestre.disabled = false;
-
-    // Remplissage dynamique des semestres selon le niveau IFRI
-    if (niveau === "L1") {
-        ajouterOptionSemestre(selectSemestre, "S1", "Semestre 1");
-        ajouterOptionSemestre(selectSemestre, "S2", "Semestre 2");
-    } else if (niveau === "L2") {
-        ajouterOptionSemestre(selectSemestre, "S3", "Semestre 3");
-        ajouterOptionSemestre(selectSemestre, "S4", "Semestre 4");
-    } else if (niveau === "L3") {
-        ajouterOptionSemestre(selectSemestre, "S5", "Semestre 5");
-        ajouterOptionSemestre(selectSemestre, "S6", "Semestre 6");
-    }
-
-    // Vider les anciens choix si le niveau change
-    choixForts = [];
-    choixFaibles = [];
-    mettreAjourAffichageBadges();
-    chargerMatieres();
-}
-
-function ajouterOptionSemestre(select, valeur, texte) {
-    const opt = document.createElement('option');
-    opt.value = valeur;
-    opt.textContent = texte;
-    select.appendChild(opt);
-}
-
 function majListesDeroulantesMatieres() {
     const sForts = document.getElementById('select-forts');
     const sFaibles = document.getElementById('select-faibles');
@@ -102,8 +61,9 @@ function majListesDeroulantesMatieres() {
 }
 
 function ajouterMatiereDepuisSelect(type) {
-    const select = type === 'fort' ? document.getElementById('select-forts') : document.getElementById('select-faibles');
-    if (!select) return;
+    const select = type === 'fort'
+        ? document.getElementById('select-forts')
+        : document.getElementById('select-faibles');
 
     const id = parseInt(select.value);
     if (!id) return;
@@ -169,15 +129,12 @@ function mettreAjourAffichageBadges() {
 // ==========================================
 // 4. SOUMISSION FINALE — APPEL AU BACKEND
 // ==========================================
-async function soumettreInscription(planningBrut) {
+async function soumettreInscription(disponibilites) {
     const nom = localStorage.getItem("ml_nom") || "";
     const prenom = localStorage.getItem("ml_prenom") || "";
     const email = localStorage.getItem("ml_email") || "";
     const telephone = localStorage.getItem("ml_telephone") || "";
-    
-    // 🔐 CORRECTION : Récupération de la bonne clé définie à l'étape 1
-    const password = localStorage.getItem("ml_mot_de_passe") || "";
-
+    const password = localStorage.getItem("ml_password") || "";
     const filiere = document.getElementById('filiere')?.value || "";
     const niveau_etudes = document.getElementById('study-level')?.value || "";
     const bio = document.getElementById('bio')?.value || "";
@@ -186,24 +143,6 @@ async function soumettreInscription(planningBrut) {
         ...choixForts.map(m => ({ id_matiere: m.id_matiere, type_competence: "fort" })),
         ...choixFaibles.map(m => ({ id_matiere: m.id_matiere, type_competence: "faible" }))
     ];
-
-    // 🕒 CORRECTION : Transformation du planning texte ("08h-10h") au format Django ("08:00:00")
-    const disponibilitesClean = [];
-    Object.keys(planningBrut).forEach(jour => {
-        planningBrut[jour].forEach(creneau => {
-            // Nettoyage et découpage du créneau (ex: "08h-10h" devient ["08h", "10h"])
-            const parties = creneau.split('-');
-            if (parties.length === 2) {
-                const debut = parties[0].replace('h', ':00:00').trim();
-                const fin = parties[1].replace('h', ':00:00').trim();
-                disponibilitesClean.push({
-                    jour_semaine: jour,
-                    heure_debut: debut,
-                    heure_fin: fin
-                });
-            }
-        });
-    });
 
     const payload = {
         nom,
@@ -216,7 +155,7 @@ async function soumettreInscription(planningBrut) {
         niveau_etudes,
         bio,
         competences,
-        disponibilites: disponibilitesClean
+        disponibilites
     };
 
     try {
@@ -229,14 +168,15 @@ async function soumettreInscription(planningBrut) {
         const data = await response.json();
 
         if (response.ok) {
-            // Nettoyage complet
+            // Nettoyer le localStorage
             localStorage.removeItem("ml_nom");
             localStorage.removeItem("ml_prenom");
             localStorage.removeItem("ml_email");
             localStorage.removeItem("ml_telephone");
-            localStorage.removeItem("ml_mot_de_passe");
+            localStorage.removeItem("ml_password");
             localStorage.removeItem("ml_disponibilites");
 
+            // Sauvegarder l'utilisateur connecté
             localStorage.setItem("utilisateur", JSON.stringify(data.utilisateur));
 
             alert("Inscription réussie ! Bienvenue sur MentorLink !");
@@ -255,12 +195,8 @@ async function soumettreInscription(planningBrut) {
 // 5. ÉCOUTEURS D'ÉVÉNEMENTS
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
-    // Écouteurs pour mettre à jour la vue et lancer les requêtes API
-    document.getElementById('study-level')?.addEventListener('change', gererChangementNiveau);
+    document.getElementById('study-level')?.addEventListener('change', chargerMatieres);
     document.getElementById('filiere')?.addEventListener('change', chargerMatieres);
-    document.getElementById('semestre')?.addEventListener('change', chargerMatieres);
-
-    // Écouteurs pour l'ajout immédiat de badges
     document.getElementById('select-forts')?.addEventListener('change', () => ajouterMatiereDepuisSelect('fort'));
     document.getElementById('select-faibles')?.addEventListener('change', () => ajouterMatiereDepuisSelect('faible'));
 
@@ -269,15 +205,16 @@ document.addEventListener("DOMContentLoaded", () => {
         formAcademic.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            let planningBrut = {};
+            // Récupérer les disponibilités stockées depuis etape2.js
+            let disponibilites = [];
             try {
                 const localData = localStorage.getItem("ml_disponibilites");
-                if (localData) planningBrut = JSON.parse(localData);
+                if (localData) disponibilites = JSON.parse(localData);
             } catch(err) {
                 console.error("Erreur disponibilités", err);
             }
 
-            await soumettreInscription(planningBrut);
+            await soumettreInscription(disponibilites);
         });
     }
 });
