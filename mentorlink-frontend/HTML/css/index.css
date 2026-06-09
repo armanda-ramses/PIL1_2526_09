@@ -1,0 +1,184 @@
+/* ── RESET & CONFIGURATION GLOBALE ── */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg:             #f0f2f9;
+    --card:           #ffffff;
+    --border:         #e4e8f0;
+    --text:           #1a1d2e;
+    --muted:          #6b7280;
+    --primary:        #3b5bdb;
+    --primary-hover:  #2f4cc0;
+    --primary-light:  #eef2ff;
+    --radius:         12px;
+    --shadow:         0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --shadow-md:      0 10px 15px -3px rgba(0, 0, 0, 0.08);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.5;
+}
+
+/* ── BARRE DE NAVIGATION (NAVBAR) ── */
+.navbar {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: -0.5px;
+}
+
+.btn-login {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.btn-login:hover {
+    background: var(--bg);
+    border-color: #cbd5e1;
+}
+
+/* ── SECTION PRINCIPALE (HERO) ── */
+.hero-section {
+    flex: 1;
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 60px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.hero-section h1 {
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: var(--text);
+    margin-bottom: 12px;
+}
+
+.subtitle {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 600px;
+    margin-bottom: 48px;
+}
+
+/* ── GRILLE DES FONCTIONNALITÉS (FEATURES) ── */
+.features {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 48px;
+}
+
+.feature-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 24px;
+    box-shadow: var(--shadow);
+    text-align: left;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.feature-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.feature-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+}
+
+.feature-card p {
+    font-size: 14px;
+    color: var(--muted);
+}
+
+/* ── BOUTON PRINCIPAL (CTA) ── */
+.btn-primary {
+    display: inline-block;
+    text-decoration: none;
+    background: var(--primary);
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 32px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(59, 91, 219, 0.25);
+    transition: background 0.15s, transform 0.1s;
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover);
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+}
+
+/* ── RESPONSIVE DESIGN (MOBILE) ── */
+@media (max-width: 640px) {
+    .navbar {
+        padding: 16px 20px;
+    }
+    
+    .hero-section {
+        padding: 40px 16px;
+    }
+
+    .hero-section h1 {
+        font-size: 30px;
+    }
+
+    .subtitle {
+        font-size: 15px;
+        margin-bottom: 32px;
+    }
+
+    .features {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-bottom: 32px;
+    }
+    
+    .feature-card {
+        padding: 24px;
+    }
+}
