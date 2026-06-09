@@ -2,39 +2,48 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.getElementById("loginForm");
 
     if (loginForm) {
-        loginForm.addEventListener("submit", (e) => {
-            e.preventDefault(); // Empêche le rechargement de la page pour gérer les données
+        loginForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
 
-            // 1. Récupération des valeurs saisies par l'utilisateur
+            // 1. Récupérer les valeurs saisies
             const identifier = document.getElementById("identifier").value.trim();
             const password = document.getElementById("password").value;
 
-            // 2. Récupération du profil d'inscription stocké pour simuler la connexion
-            const savedUser = localStorage.getItem("profil_utilisateur");
+            try {
+                // 2. Envoyer au backend
+                const response = await fetch("http://127.0.0.1:8000/api/auth/connexion/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        identifiant: identifier,
+                        password: password
+                    })
+                });
 
-            if (savedUser) {
-                const user = JSON.parse(savedUser);
+                const data = await response.json();
 
-                // Simulation de vérification (Vérifie si l'e-mail ou le contact match)
-                if (identifier === user.identite?.contact || identifier === localStorage.getItem("ml_email")) {
-                    
-                    // Optionnel : On crée une clé de session pour dire que l'utilisateur est connecté
-                    localStorage.setItem("ml_logged_user", JSON.stringify(user));
-                    
-                    alert("Connexion réussie ! Redirection vers votre tableau de bord...");
+                if (response.ok) {
+                    // 3. Connexion réussie — sauvegarder les infos
+                    localStorage.setItem("access_token", data.access_token);
+                    localStorage.setItem("refresh_token", data.refresh_token);
+                    localStorage.setItem("utilisateur", JSON.stringify(data.utilisateur));
+
+                    alert("Connexion réussie !");
                     window.location.href = "dashboard.html";
                 } else {
-                    alert("Identifiants inconnus. Veuillez utiliser les informations saisies à l'inscription.");
+                    // 4. Erreur de connexion
+                    alert(data.erreur || "Identifiant ou mot de passe incorrect.");
                 }
-            } else {
-                // Si aucun compte n'est trouvé en local
-                alert("Aucun compte trouvé sur cet appareil. Veuillez d'abord vous inscrire.");
-                window.location.href = "inscription_etape1.html";
+
+            } catch (error) {
+                alert("Erreur de connexion au serveur. Vérifiez que le backend est lancé.");
             }
         });
     }
 
-    // Gestion facultative du bouton Google Login
+    // Bouton Google (pas encore implémenté)
     const btnGoogle = document.querySelector(".btn-google");
     if (btnGoogle) {
         btnGoogle.addEventListener("click", () => {
