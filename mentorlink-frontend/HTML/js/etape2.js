@@ -1,11 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    // Correspondance moments → heures
+    // Correspondance data-moment → heures
     const heuresMoments = {
-        "Matin": { heure_debut: "08:00:00", heure_fin: "12:00:00" },
-        "Après-midi": { heure_debut: "13:00:00", heure_fin: "17:00:00" },
-        "Soirée": { heure_debut: "18:00:00", heure_fin: "21:00:00" },
-        "Nuit": { heure_debut: "21:00:00", heure_fin: "06:00:00" }
+        "matin": { heure_debut: "08:00:00", heure_fin: "12:00:00" },
+        "apres-midi": { heure_debut: "13:00:00", heure_fin: "17:00:00" },
+        "soiree": { heure_debut: "18:00:00", heure_fin: "21:00:00" },
+        "nuit": { heure_debut: "21:00:00", heure_fin: "06:00:00" }
     };
 
     // 1. Sélection des jours
@@ -33,13 +33,13 @@ document.addEventListener("DOMContentLoaded", function () {
             // Récupérer les jours sélectionnés
             const selectedDays = [];
             document.querySelectorAll(".day-pill.selected").forEach(pill => {
-                selectedDays.push(pill.getAttribute("data-day") || pill.textContent.trim());
+                selectedDays.push(pill.getAttribute("data-day"));
             });
 
             // Récupérer les moments sélectionnés
             const selectedMoments = [];
             document.querySelectorAll(".moment-card.selected").forEach(card => {
-                selectedMoments.push(card.getAttribute("data-moment") || card.textContent.trim());
+                selectedMoments.push(card.getAttribute("data-moment"));
             });
 
             // Validation
@@ -63,10 +63,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             });
 
-            // Sauvegarder au format backend
+            // Sauvegarder
             localStorage.setItem("ml_disponibilites", JSON.stringify(disponibilites));
 
-            // Passer à l'étape suivante
+            // Passer à l'étape 3
             window.location.href = "inscription_etape3.html";
         });
     }
