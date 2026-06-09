@@ -1,36 +1,107 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>Bienvenue sur IFRI MentorLink</title>
-    <link rel="stylesheet" href="css/index.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IFRI MentorLink</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/index.css" />
 </head>
 <body>
 
-    <!-- Barre de navigation simplifiée -->
-    <nav class="navbar">
-        <div class="logo">IFRI MentorLink</div>
-        <a href="connexion.html" class="btn-login">Connexion</a>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">
+      <div class="logo-icon">IF</div>
+      <div>
+        <div class="logo-title">IFRI</div>
+        <div class="logo-sub">MentorLink</div>
+      </div>
+    </div>
+    <nav>
+      <a href="connexion.html" class="btn-ghost">Connexion</a>
+      <a href="inscription_etape1.html" class="btn-primary">Commencer gratuitement</a>
     </nav>
+  </header>
 
-    <!-- Section de présentation -->
-    <header class="hero-section">
-        <h1>Bienvenue sur IFRI MentorLink</h1>
-        <p class="subtitle">La plateforme de mise en relation entre mentors et étudiants de l'IFRI.</p>
-        
-        <div class="features">
-            <div class="feature-card">
-                <h3>Partage de compétences</h3>
-                <p>Trouvez un mentor pour approfondir vos connaissances en IA, développement web et bien plus.</p>
-            </div>
-            <div class="feature-card">
-                <h3>Suivi personnalisé</h3>
-                <p>Gérez vos séances de mentorat, suivez vos progrès et échangez facilement.</p>
-            </div>
-        </div>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="badge">⭐ Plateforme officielle de mentorat — IFRI, Bénin</div>
+      <h1>Trouvez le mentor qui va <span class="accent">accélérer votre réussite</span></h1>
+      <p class="subtitle">Connectez-vous avec des pairs et des aînés dans votre filière. Partagez vos savoirs, comblez vos lacunes et progressez ensemble — selon votre emploi du temps.</p>
+      <div class="hero-btns">
+        <a href="inscription_etape1.html" class="btn-primary">Commencer gratuitement →</a>
+        <a href="connexion.html" class="btn-secondary">Se connecter</a>
+      </div>
+      <div class="trust">
+        <span>✅ Inscription gratuite</span>
+        <span>✅ Sans engagement</span>
+        <span>✅ 100 % IFRI</span>
+      </div>
+    </div>
+  </section>
 
-        <a href="inscription_etape1.html" class="btn-primary">Commencer maintenant</a>
-    </header>
+  <!-- Features -->
+  <section class="features-section">
+    <h2>Tout ce qu'il vous faut pour réussir</h2>
+    <p class="section-sub">Conçu par des étudiants, pour les étudiants de l'IFRI.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon"></div>
+        <h3>Mise en relation intelligente</h3>
+        <p>Notre algorithme vous propose le mentor le plus compatible selon vos compétences, votre emploi du temps et vos objectifs académiques.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💬</div>
+        <h3>Messagerie instantanée</h3>
+        <p>Discutez en temps réel, planifiez des séances, partagez des ressources et restez synchronisés avec vos binômes.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎓</div>
+        <h3>Profils académiques</h3>
+        <p>Mettez en avant vos points forts, vos lacunes et vos disponibilités. Laissez votre profil parler pour vous.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="steps-section">
+    <h2>Opérationnel en quelques minutes</h2>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Créez votre profil</h3>
+        <p>Renseignez votre filière, votre niveau, vos points forts et vos disponibilités.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>Recevez vos suggestions</h3>
+        <p>Parcourez les propositions classées par score de compatibilité.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Commencez à apprendre</h3>
+        <p>Écrivez directement, planifiez des séances et suivez votre progression.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2>Prêt à trouver votre binôme idéal ?</h2>
+    <p>Rejoignez tous ces étudiants de l'IFRI qui progressent ensemble.</p>
+    <a href="inscription_etape1.html" class="btn-white">Créer un compte gratuit →</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-logo">IF</div>
+    <p>© 2026 IFRI — Institut de Formation et de Recherche en Informatique. Tous droits réservés.</p>
+  </footer>
 
 </body>
 </html>
+
