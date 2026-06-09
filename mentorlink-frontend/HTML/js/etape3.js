@@ -26,13 +26,13 @@ const filieresBackend = {
 // 2. CHARGEMENT DES MATIÈRES DEPUIS LE BACKEND
 // ==========================================
 async function chargerMatieres() {
-    const niveauHTML = document.getElementById('study-level')?.value;
     const filiereHTML = document.getElementById('filiere')?.value;
+    const niveauHTML = document.getElementById('study-level')?.value;
 
-    if (!niveauHTML || !filiereHTML) return;
+    if (!filiereHTML || !niveauHTML) return;
 
-    const niveau = niveauxBackend[niveauHTML];
-    const filiere = filieresBackend[filiereHTML];
+    const filiere = filieresBackend[filiereHTML] || filiereHTML;
+    const niveau = niveauxBackend[niveauHTML] || niveauHTML;
 
     try {
         const response = await fetch(
@@ -126,7 +126,7 @@ function mettreAjourAffichageBadges() {
                 zForts.appendChild(b);
             });
         } else {
-            zForts.innerHTML = '<p class="placeholder-zone">Aucune matière sélectionnée comme point fort.</p>';
+            zForts.innerHTML = '<p class="placeholder-zone">Aucune matière sélectionnée.</p>';
         }
     }
 
@@ -141,7 +141,7 @@ function mettreAjourAffichageBadges() {
                 zFaibles.appendChild(b);
             });
         } else {
-            zFaibles.innerHTML = '<p class="placeholder-zone">Aucune matière sélectionnée comme point faible.</p>';
+            zFaibles.innerHTML = '<p class="placeholder-zone">Aucune matière sélectionnée.</p>';
         }
     }
 }
@@ -156,10 +156,10 @@ async function soumettreInscription(disponibilites) {
     const telephone = localStorage.getItem("ml_telephone") || "";
     const password = localStorage.getItem("ml_password") || "";
 
-    const niveauHTML = document.getElementById('study-level')?.value || "";
     const filiereHTML = document.getElementById('filiere')?.value || "";
-    const niveau_etudes = niveauxBackend[niveauHTML] || niveauHTML;
+    const niveauHTML = document.getElementById('study-level')?.value || "";
     const filiere = filieresBackend[filiereHTML] || filiereHTML;
+    const niveau_etudes = niveauxBackend[niveauHTML] || niveauHTML;
     const bio = document.getElementById('bio')?.value || "";
 
     const competences = [
@@ -168,17 +168,10 @@ async function soumettreInscription(disponibilites) {
     ];
 
     const payload = {
-        nom,
-        prenom,
-        email,
-        telephone,
-        password,
-        password_confirm: password,
-        filiere,
-        niveau_etudes,
-        bio,
-        competences,
-        disponibilites
+        nom, prenom, email, telephone,
+        password, password_confirm: password,
+        filiere, niveau_etudes, bio,
+        competences, disponibilites
     };
 
     try {
@@ -197,8 +190,6 @@ async function soumettreInscription(disponibilites) {
             localStorage.removeItem("ml_telephone");
             localStorage.removeItem("ml_password");
             localStorage.removeItem("ml_disponibilites");
-
-            localStorage.setItem("access_token", data.access_token);
             localStorage.setItem("utilisateur", JSON.stringify(data.utilisateur));
 
             alert("Inscription réussie ! Bienvenue sur MentorLink !");
