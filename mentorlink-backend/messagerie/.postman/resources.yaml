@@ -1,0 +1,11 @@
+# Use this workspace to collaborate
+workspace:
+  id: 17fddd24-e96d-4519-8b33-c0126f70255c
+
+localResources:
+  collections:
+    - ..\POSTMAN_collection.json
+
+cloudResources:
+  collections:
+    ..\postman\collections\IFRI_MentorLink Messaging API: 0bf6478c-e7cf-4066-a769-ef31ee657c78

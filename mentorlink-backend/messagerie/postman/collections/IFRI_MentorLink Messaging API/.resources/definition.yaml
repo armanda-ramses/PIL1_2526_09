@@ -1,0 +1,8 @@
+$kind: collection
+name: IFRI_MentorLink Messaging API
+variables:
+  baseUrl: http://127.0.0.1:8000
+  user1_id: "1"
+  user2_id: "2"
+  conversation_id: "1"
+  message_text: Salut, c'est un test

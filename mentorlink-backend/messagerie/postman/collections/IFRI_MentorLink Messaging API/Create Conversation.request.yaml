@@ -1,0 +1,24 @@
+$kind: http-request
+name: Create Conversation
+url: "{{baseUrl}}/api/conversations/"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: '{"utilisateur1_id": {{user1_id}}, "utilisateur2_id": {{user2_id}}}'
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status code is 201', function () {
+        pm.response.to.have.status(201);
+      });
+      var jsonData = pm.response.json();
+      pm.test('Conversation ID exists', function () {
+        pm.expect(jsonData.id_conversation).to.not.be.undefined;
+      });
+      if (jsonData.id_conversation) {
+        pm.collectionVariables.set('conversation_id', jsonData.id_conversation);
+      }
+    language: text/javascript
+order: 2000
