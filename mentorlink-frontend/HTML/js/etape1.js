@@ -1,24 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const form = document.querySelector("form");
+    const form = document.getElementById("registerForm");
     if (form) {
         form.addEventListener("submit", (e) => {
             e.preventDefault();
 
-            // 1. Récupérer les valeurs
-            const nom = document.getElementById("nom")?.value.trim() || "";
-            const prenom = document.getElementById("prenom")?.value.trim() || "";
-            const email = document.getElementById("email")?.value.trim() || "";
-            const telephone = document.getElementById("telephone")?.value.trim() || "";
-            const password = document.getElementById("password")?.value || "";
-            const password_confirm = document.getElementById("password_confirm")?.value || "";
+            // 1. Récupérer les valeurs selon les vrais id du HTML
+            const nom = document.getElementById("lastname")?.value.trim() || "";
+            const prenom = document.getElementById("firstname")?.value.trim() || "";
+            const contact = document.getElementById("contact")?.value.trim() || "";
+            const password = document.getElementById("reg-password")?.value || "";
+            const password_confirm = document.getElementById("confirm-password")?.value || "";
 
-            // 2. Vérifications basiques
+            // 2. Déterminer si contact est email ou téléphone
+            const email = contact.includes("@") ? contact : "";
+            const telephone = !contact.includes("@") ? contact : "";
+
+            // 3. Validations
             if (!nom || !prenom) {
                 alert("Veuillez remplir votre nom et prénom.");
                 return;
             }
 
-            if (!email && !telephone) {
+            if (!contact) {
                 alert("Veuillez fournir un email ou un numéro de téléphone.");
                 return;
             }
@@ -33,14 +36,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // 3. Stocker temporairement dans localStorage
+            // 4. Stocker dans localStorage
             localStorage.setItem("ml_nom", nom);
             localStorage.setItem("ml_prenom", prenom);
             localStorage.setItem("ml_email", email);
             localStorage.setItem("ml_telephone", telephone);
             localStorage.setItem("ml_password", password);
 
-            // 4. Passer à l'étape 2
+            // 5. Passer à l'étape 2
             window.location.href = "inscription_etape2.html";
         });
     }

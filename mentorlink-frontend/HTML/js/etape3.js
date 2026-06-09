@@ -1,18 +1,38 @@
 // ==========================================
 // 1. VARIABLES GLOBALES
 // ==========================================
-let choixForts = [];   // [{id_matiere: 1, nom: "..."}, ...]
-let choixFaibles = []; // [{id_matiere: 1, nom: "..."}, ...]
-let toutesLesMatieres = []; // Liste complète chargée depuis le backend
+let choixForts = [];
+let choixFaibles = [];
+let toutesLesMatieres = [];
+
+// Correspondance niveau HTML → niveau backend
+const niveauxBackend = {
+    "L1": "Licence 1",
+    "L2": "Licence 2",
+    "L3": "Licence 3"
+};
+
+// Correspondance filière HTML → filière backend
+const filieresBackend = {
+    "GL": "GL",
+    "SI": "SI",
+    "IM": "IM",
+    "SIRI": "SIRI",
+    "IA": "IA",
+    "IoT": "SE&IoT"
+};
 
 // ==========================================
 // 2. CHARGEMENT DES MATIÈRES DEPUIS LE BACKEND
 // ==========================================
 async function chargerMatieres() {
-    const filiere = document.getElementById('filiere')?.value;
-    const niveau = document.getElementById('study-level')?.value;
+    const filiereHTML = document.getElementById('filiere')?.value;
+    const niveauHTML = document.getElementById('study-level')?.value;
 
-    if (!filiere || !niveau) return;
+    if (!filiereHTML || !niveauHTML) return;
+
+    const filiere = filieresBackend[filiereHTML] || filiereHTML;
+    const niveau = niveauxBackend[niveauHTML] || niveauHTML;
 
     try {
         const response = await fetch(
@@ -127,7 +147,7 @@ function mettreAjourAffichageBadges() {
 }
 
 // ==========================================
-// 4. SOUMISSION FINALE — APPEL AU BACKEND
+// 4. SOUMISSION FINALE
 // ==========================================
 async function soumettreInscription(disponibilites) {
     const nom = localStorage.getItem("ml_nom") || "";
@@ -135,8 +155,11 @@ async function soumettreInscription(disponibilites) {
     const email = localStorage.getItem("ml_email") || "";
     const telephone = localStorage.getItem("ml_telephone") || "";
     const password = localStorage.getItem("ml_password") || "";
-    const filiere = document.getElementById('filiere')?.value || "";
-    const niveau_etudes = document.getElementById('study-level')?.value || "";
+
+    const filiereHTML = document.getElementById('filiere')?.value || "";
+    const niveauHTML = document.getElementById('study-level')?.value || "";
+    const filiere = filieresBackend[filiereHTML] || filiereHTML;
+    const niveau_etudes = niveauxBackend[niveauHTML] || niveauHTML;
     const bio = document.getElementById('bio')?.value || "";
 
     const competences = [
@@ -145,17 +168,10 @@ async function soumettreInscription(disponibilites) {
     ];
 
     const payload = {
-        nom,
-        prenom,
-        email,
-        telephone,
-        password,
-        password_confirm: password,
-        filiere,
-        niveau_etudes,
-        bio,
-        competences,
-        disponibilites
+        nom, prenom, email, telephone,
+        password, password_confirm: password,
+        filiere, niveau_etudes, bio,
+        competences, disponibilites
     };
 
     try {
@@ -168,15 +184,12 @@ async function soumettreInscription(disponibilites) {
         const data = await response.json();
 
         if (response.ok) {
-            // Nettoyer le localStorage
             localStorage.removeItem("ml_nom");
             localStorage.removeItem("ml_prenom");
             localStorage.removeItem("ml_email");
             localStorage.removeItem("ml_telephone");
             localStorage.removeItem("ml_password");
             localStorage.removeItem("ml_disponibilites");
-
-            // Sauvegarder l'utilisateur connecté
             localStorage.setItem("utilisateur", JSON.stringify(data.utilisateur));
 
             alert("Inscription réussie ! Bienvenue sur MentorLink !");
@@ -205,7 +218,6 @@ document.addEventListener("DOMContentLoaded", () => {
         formAcademic.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            // Récupérer les disponibilités stockées depuis etape2.js
             let disponibilites = [];
             try {
                 const localData = localStorage.getItem("ml_disponibilites");
