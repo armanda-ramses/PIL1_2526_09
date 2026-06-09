@@ -193,16 +193,18 @@ function remettreListesMatieresAZero() {
     const sForts = document.getElementById('select-forts');
     const sFaibles = document.getElementById('select-faibles');
     
-    sForts.innerHTML = '<option value="" disabled selected>Choisissez une matière à ajouter...</option>';
-    sFaibles.innerHTML = '<option value="" disabled selected>Choisissez une matière à ajouter...</option>';
-    
-    sForts.disabled = true;
-    sFaibles.disabled = true;
+    if(sForts) {
+        sForts.innerHTML = '<option value="" disabled selected>Choisissez une matière à ajouter...</option>';
+        sForts.disabled = true;
+    }
+    if(sFaibles) {
+        sFaibles.innerHTML = '<option value="" disabled selected>Choisissez une matière à ajouter...</option>';
+        sFaibles.disabled = true;
+    }
     
     mettreAjourAffichageBadges();
 }
 
-// Remplit les sélecteurs de matières selon le niveau / semestre / filière choisi
 function majListesDeroulantesMatieres() {
     const niveau = document.getElementById('study-level').value;
     const semestre = document.getElementById('semestre').value;
@@ -212,7 +214,6 @@ function majListesDeroulantesMatieres() {
     const sFaibles = document.getElementById('select-faibles');
 
     if (!niveau || !semestre) {
-        remettreListesMatieresAZero();
         return;
     }
 
@@ -221,31 +222,26 @@ function majListesDeroulantesMatieres() {
         matieres = troncCommunL1[semestre] || [];
     } else {
         if (!filiere) {
-            remettreListesMatieresAZero();
             return;
         }
         matieres = (specialitesL2L3[filiere] && specialitesL2L3[filiere][semestre]) ? specialitesL2L3[filiere][semestre] : [];
     }
 
     if (matieres.length === 0) {
-        remettreListesMatieresAZero();
         return;
     }
 
-    // Activer les listes déroulantes
-    sForts.disabled = false;
-    sFaibles.disabled = false;
+    if(sForts) sForts.disabled = false;
+    if(sFaibles) sFaibles.disabled = false;
 
-    // Remplissage filtré (on retire ce qui est déjà sélectionné)
-    remplirSelecteur(sForts, matieres, choixForts, choixFaibles);
-    remplirSelecteur(sFaibles, matieres, choixFaibles, choixForts);
+    if(sForts) remplirSelecteur(sForts, matieres, choixForts, choixFaibles);
+    if(sFaibles) remplirSelecteur(sFaibles, matieres, choixFaibles, choixForts);
 }
 
 function remplirSelecteur(selectElement, toutesLesMatieres, listeActuelle, listeOpposee) {
     selectElement.innerHTML = '<option value="" disabled selected>Choisissez une matière à ajouter...</option>';
     
     toutesLesMatieres.forEach(matiere => {
-        // On n'affiche pas la matière si elle est déjà sélectionnée d'un côté ou de l'autre
         if (!listeActuelle.includes(matiere) && !listeOpposee.includes(matiere)) {
             const opt = document.createElement('option');
             opt.value = matiere;
@@ -255,9 +251,9 @@ function remplirSelecteur(selectElement, toutesLesMatieres, listeActuelle, liste
     });
 }
 
-// Ajoute une matière dans le tableau correspondant
 function ajouterMatiereDepuisSelect(type) {
     const select = type === 'fort' ? document.getElementById('select-forts') : document.getElementById('select-faibles');
+    if (!select) return;
     const valeur = select.value;
 
     if (!valeur) return;
@@ -269,10 +265,9 @@ function ajouterMatiereDepuisSelect(type) {
     }
 
     mettreAjourAffichageBadges();
-    majListesDeroulantesMatieres(); // Recalcule les options restantes
+    majListesDeroulantesMatieres();
 }
 
-// Supprime et remet la matière disponible
 function supprimerMatiere(nom, type) {
     if (type === 'faible') {
         choixFaibles = choixFaibles.filter(m => m !== nom);
@@ -283,37 +278,38 @@ function supprimerMatiere(nom, type) {
     majListesDeroulantesMatieres();
 }
 
-// Gère le rendu visuel sous forme de "Tags photos" rétractables au clic
 function mettreAjourAffichageBadges() {
     const zForts = document.getElementById('zone-forts');
     const zFaibles = document.getElementById('zone-faibles');
 
-    // Section Forts
-    zForts.innerHTML = "";
-    if (choixForts.length > 0) {
-        choixForts.forEach(m => {
-            const b = document.createElement('span');
-            b.className = "badge-stored badge-fort";
-            b.innerHTML = `${m} ✕`;
-            b.onclick = () => supprimerMatiere(m, 'fort');
-            zForts.appendChild(b);
-        });
-    } else {
-        zForts.innerHTML = '<p class="placeholder-zone">Aucune matière sélectionnée comme point fort.</p>';
+    if (zForts) {
+        zForts.innerHTML = "";
+        if (choixForts.length > 0) {
+            choixForts.forEach(m => {
+                const b = document.createElement('span');
+                b.className = "badge-stored badge-fort";
+                b.innerHTML = `${m} ✕`;
+                b.onclick = () => supprimerMatiere(m, 'fort');
+                zForts.appendChild(b);
+            });
+        } else {
+            zForts.innerHTML = '<p class="placeholder-zone">Aucune matière sélectionnée comme point fort.</p>';
+        }
     }
 
-    // Section Faibles
-    zFaibles.innerHTML = "";
-    if (choixFaibles.length > 0) {
-        choixFaibles.forEach(m => {
-            const b = document.createElement('span');
-            b.className = "badge-stored badge-faible";
-            b.innerHTML = `${m} ✕`;
-            b.onclick = () => supprimerMatiere(m, 'faible');
-            zFaibles.appendChild(b);
-        });
-    } else {
-        zFaibles.innerHTML = '<p class="placeholder-zone">Aucune matière sélectionnée comme point faible.</p>';
+    if (zFaibles) {
+        zFaibles.innerHTML = "";
+        if (choixFaibles.length > 0) {
+            choixFaibles.forEach(m => {
+                const b = document.createElement('span');
+                b.className = "badge-stored badge-faible";
+                b.innerHTML = `${m} ✕`;
+                b.onclick = () => supprimerMatiere(m, 'faible');
+                zFaibles.appendChild(b);
+            });
+        } else {
+            zFaibles.innerHTML = '<p class="placeholder-zone">Aucune matière sélectionnée comme point faible.</p>';
+        }
     }
 }
 
@@ -321,6 +317,7 @@ function mettreAjourAffichageBadges() {
 // 3. ÉCOUTEURS D'ÉVÉNEMENTS & SOUMISSION CONSOLIDÉE
 // ==========================================================
 document.addEventListener("DOMContentLoaded", () => {
+    // Écouteurs sur les sélections d'études
     document.getElementById('study-level')?.addEventListener('change', gérerChangementNiveau);
     document.getElementById('filiere')?.addEventListener('change', gérerChangementFiliere);
     document.getElementById('semestre')?.addEventListener('change', majListesDeroulantesMatieres);
@@ -335,7 +332,7 @@ document.addEventListener("DOMContentLoaded", () => {
         formAcademic.addEventListener('submit', function(e) {
             e.preventDefault();
 
-            let planningStocke = { jours: [], moments: [] };
+            let planningStocke = {};
             try {
                 const localData = localStorage.getItem("ml_disponibilites");
                 if (localData) planningStocke = JSON.parse(localData);
@@ -343,52 +340,34 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error("Erreur d'extraction du planning", err);
             }
 
-            // COMPILATION DU RENDU FINAL DANS L'OBJET UNIQUE
+            const nomEtape1 = localStorage.getItem("ml_nom") || "";
+            const prenomEtape1 = localStorage.getItem("ml_prenom") || "";
+            const emailEtape1 = localStorage.getItem("ml_email") || "";
+
             const payloadConsolide = {
                 identite: {
-                    nom: localStorage.getItem("ml_nom") || "",
-                    prenom: localStorage.getItem("ml_prenom") || "",
-                    email: localStorage.getItem("ml_email") || ""
+                    nom: nomEtape1,
+                    prenom: prenomEtape1,
+                    email: emailEtape1,
+                    contact: localStorage.getItem("ml_contact") || "Non renseigné",
+                    role: localStorage.getItem("ml_role") || "Mentoré"
                 },
-                horaires: planningStocke,
                 academique: {
-                    niveau: document.getElementById('study-level')?.value || "",
+                    niveau: document.getElementById('study-level')?.value || "Non spécifié",
                     semestre: document.getElementById('semestre')?.value || "",
-                    filiere: document.getElementById('filiere')?.value || "",
-                    biographie: document.getElementById('bio')?.value || "",
-                    matieres_fortes: choixForts,
-                    matieres_faibles: choixFaibles
-                }
+                    filiere: document.getElementById('filiere')?.value || "Non spécifiée",
+                    biographie: document.getElementById('bio')?.value || ""
+                },
+                competences: {
+                    matieres: [...choixForts, ...choixFaibles]
+                },
+                disponibilites: planningStocke
             };
 
-            const jsonFinalPourBackend = JSON.stringify(payloadConsolide, null, 2);
+            localStorage.setItem("profil_utilisateur", JSON.stringify(payloadConsolide));
 
-            console.log("=== JSON CONSOLIDÉ SÉCURISÉ ===");
-            console.log(jsonFinalPourBackend);
-
-            alert("Succès ! Inscription validée. Votre JSON final consolidé a été généré dans la console.");
-            
-            // Redirection vers le Dashboard de la soirée !
+            alert(`Félicitations ${prenomEtape1}, ton profil est prêt !`);
             window.location.href = "dashboard.html";
         });
     }
-});
-// Remplace 'btn-terminer' par l'ID exact de ton bouton final
-document.getElementById('btn-terminer').addEventListener('click', () => {
-    
-    // 1. Ton objet de données que tu as construit (ex: payloadConsolide)
-    // Assure-toi qu'il contient bien le nom, les matières, etc.
-    const finalData = {
-        identite: { prenom: document.getElementById('prenom').value }, // ou autre source
-        academique: {
-            matieres: [...document.querySelectorAll('#liste-matières-choisies .badge')].map(b => b.innerText.trim())
-        }
-    };
-
-    // 2. Sauvegarde dans le localStorage
-    // C'est cette clé 'profil_utilisateur' qui permet au Dashboard de te reconnaître
-    localStorage.setItem('profil_utilisateur', JSON.stringify(finalData));
-
-    // 3. Redirection vers le Dashboard
-    window.location.href = 'dashboard.html';
 });
