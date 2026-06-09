@@ -1,0 +1,208 @@
+/* Variables globales pour respecter la charte de la maquette */
+:root {
+    --bg-color: #f4f7fc;
+    --card-bg: #ffffff;
+    --primary-color: #004ac6;
+    --primary-hover: #003ea8;
+    --primary-light: #e8f0fe;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border-color: #cbd5e1;
+    --border-focus: #004ac6;
+    --font-family: 'Inter', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-family);
+    min-height: 100vh; /* Correction du 'screen' qui n'est pas valide */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Conteneur principal centré */
+.container {
+    width: 100%;
+    max-width: 520px;
+    margin: auto;
+}
+
+/* Style de la carte principale */
+.card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    overflow: hidden;
+    width: 100%;
+}
+
+.card-body {
+    padding: 40px;
+}
+
+/* En-têtes & Logo */
+.logo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.logo-image {
+    max-height: 80px;
+    width: auto;
+    object-fit: contain;
+}
+
+.logo-placeholder {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--text-main);
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 32px;
+    line-height: 1.5;
+}
+
+/* Formulaires et Inputs */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text-main);
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 14px;
+    color: var(--text-muted);
+    font-size: 16px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 14px 12px 40px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    background-color: #fff;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(0, 74, 198, 0.15);
+}
+
+/* Boutons */
+.btn-primary {
+    width: 100%;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Pied de carte (Barre bleue claire partagée) */
+.card-footer-bar {
+    background-color: var(--primary-light);
+    padding: 16px;
+    text-align: center;
+    font-size: 13px;
+    border-top: 1px solid #dbeafe;
+}
+
+.card-footer-bar a, .footer-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.card-footer-bar a:hover, .footer-link:hover {
+    text-shadow: 0 0 1px var(--primary-color);
+}
+
+.external-footer {
+    margin-top: 24px;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+
+
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centre horizontalement le logo et les textes */
+    text-align: center;   /* Centre les lignes de texte */
+    gap: 8px;            /* Crée un espace régulier entre chaque élément */
+    margin-bottom: 24px;  /* Espace sous le bloc avant le début du formulaire */
+}
+
+.logo-img {
+    max-height: 70px;
+    width: auto;
+    object-fit: contain;
+    margin-bottom: 4px;   /* Un petit plus d'espace sous l'image */
+}
+
+.logo-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.logo-subtitle {
+    font-size: 13px;
+    color: var(--muted); /* Attention : ton CSS utilise --muted au lieu de --text-muted */
+}
