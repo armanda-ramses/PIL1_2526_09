@@ -146,15 +146,16 @@ function mettreAjourAffichageBadges() {
     }
 }
 
-// ==========================================
+/// ==========================================
 // 4. SOUMISSION FINALE
 // ==========================================
-async function soumettreInscription(disponibilites) {
+async function soumettreInscription(disponibilitesBrutes) {
     const nom = localStorage.getItem("ml_nom") || "";
     const prenom = localStorage.getItem("ml_prenom") || "";
     const email = localStorage.getItem("ml_email") || "";
     const telephone = localStorage.getItem("ml_telephone") || "";
-    const password = localStorage.getItem("ml_password") || "";
+    // CORRECTION 1 : La bonne clé du localStorage
+    const password = localStorage.getItem("ml_mot_de_passe") || "";
 
     const filiereHTML = document.getElementById('filiere')?.value || "";
     const niveauHTML = document.getElementById('study-level')?.value || "";
@@ -167,11 +168,33 @@ async function soumettreInscription(disponibilites) {
         ...choixFaibles.map(m => ({ id_matiere: m.id_matiere, type_competence: "faible" }))
     ];
 
+    // CORRECTION 2 : Conversion des disponibilités pour le Backend
+    let disponibilitesBackend = [];
+    for (const [jour, creneaux] of Object.entries(disponibilitesBrutes)) {
+        creneaux.forEach(creneau => {
+            // Transforme "08h-10h" en heure_debut: "08:00:00", heure_fin: "10:00:00"
+            const parts = creneau.split('-');
+            if (parts.length === 2) {
+                const heure_debut = parts[0].padStart(3, '0').replace('h', ':00:00');
+                const heure_fin = parts[1].padStart(3, '0').replace('h', ':00:00');
+                // Met la première lettre du jour en majuscule (lundi -> Lundi)
+                const jour_semaine = jour.charAt(0).toUpperCase() + jour.slice(1);
+                
+                disponibilitesBackend.push({
+                    jour_semaine: jour_semaine,
+                    heure_debut: heure_debut,
+                    heure_fin: heure_fin
+                });
+            }
+        });
+    }
+
     const payload = {
         nom, prenom, email, telephone,
         password, password_confirm: password,
         filiere, niveau_etudes, bio,
-        competences, disponibilites
+        competences, 
+        disponibilites: disponibilitesBackend // On envoie le tableau converti
     };
 
     try {
@@ -184,26 +207,22 @@ async function soumettreInscription(disponibilites) {
         const data = await response.json();
 
         if (response.ok) {
-            localStorage.removeItem("ml_nom");
-            localStorage.removeItem("ml_prenom");
-            localStorage.removeItem("ml_email");
-            localStorage.removeItem("ml_telephone");
-            localStorage.removeItem("ml_password");
-            localStorage.removeItem("ml_disponibilites");
+            // Nettoyage
+            localStorage.clear();
             localStorage.setItem("utilisateur", JSON.stringify(data.utilisateur));
 
             alert("Inscription réussie ! Bienvenue sur MentorLink !");
-            window.location.href = "dashboard.html";
+            window.location.href = "connexion.html"; // Redirection logique après l'inscription
         } else {
-            const erreurs = Object.values(data).flat().join("\n");
-            alert("Erreur : " + erreurs);
+            // Amélioration de l'affichage des erreurs venant du serveur
+            const erreurs = typeof data === 'object' ? JSON.stringify(data) : data;
+            alert("Erreur dans les données : " + erreurs);
         }
     } catch (error) {
-        alert("Erreur de connexion au serveur.");
+        alert("Erreur de connexion au serveur. Assurez-vous que python manage.py runserver tourne !");
         console.error(error);
     }
 }
-
 // ==========================================
 // 5. ÉCOUTEURS D'ÉVÉNEMENTS
 // ==========================================
