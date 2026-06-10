@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Utilisateur, ProfilCompetences, Disponibilites, Matieres, MatiereFiliereNiveau
+from .models import Utilisateur, ProfilCompetences, Disponibilites, Matieres, MatiereFiliereNiveau, PropositionsMentorat
 import re
 from datetime import time
 
@@ -218,3 +218,34 @@ class ModificationProfilSerializer(serializers.ModelSerializer):
     )
 
         return instance        
+
+# =================================================================
+# SERIALIZER DES PROPOSITIONS DE MENTORAT
+# =================================================================
+class PropositionMentoratSerializer(serializers.ModelSerializer):
+    nom_matiere = serializers.CharField(source='matiere.nom_matiere', read_only=True)
+    id_matiere = serializers.IntegerField(write_only=True)
+    utilisateur_id = serializers.IntegerField(write_only=True)
+    utilisateur_nom = serializers.CharField(source='utilisateur.nom', read_only=True)
+    utilisateur_prenom = serializers.CharField(source='utilisateur.prenom', read_only=True)
+
+    class Meta:
+        model = PropositionsMentorat
+        fields = [
+            'id', 'utilisateur_id', 'id_matiere', 'nom_matiere', 
+            'type_proposition', 'format_session', 'date_publication',
+            'utilisateur_nom', 'utilisateur_prenom'
+        ]
+
+    def create(self, validated_data):
+        id_matiere = validated_data.pop('id_matiere')
+        utilisateur_id = validated_data.pop('utilisateur_id')
+        matiere = Matieres.objects.get(id=id_matiere)
+        utilisateur = Utilisateur.objects.get(id=utilisateur_id)
+        
+        proposition = PropositionsMentorat.objects.create(
+            utilisateur=utilisateur,
+            matiere=matiere,
+            **validated_data
+        )
+        return proposition

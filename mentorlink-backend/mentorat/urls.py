@@ -6,7 +6,8 @@ from .views import (
    MotDePasseOublieView,
    VerifierCodeView,
    NouveauMotDePasseView,
-   ModificationProfilView
+   ModificationProfilView,
+   PropositionMentoratView
 )
 
 urlpatterns = [
@@ -17,4 +18,5 @@ urlpatterns = [
    path('verifier-code/', VerifierCodeView.as_view()),
    path('nouveau-mot-de-passe/', NouveauMotDePasseView.as_view()),
    path('profil/<int:id>/', ModificationProfilView.as_view()),
+   path('propositions/', PropositionMentoratView.as_view()),
 ]

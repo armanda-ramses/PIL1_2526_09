@@ -15,6 +15,7 @@ from .serializers import (
     VerifierCodeSerializer,
     NouveauMotDePasseSerializer,
     ModificationProfilSerializer,
+    PropositionMentoratSerializer
 )
 from .models import MatiereFiliereNiveau, Utilisateur, CodeReinitialisation
 
@@ -316,3 +317,27 @@ class ModificationProfilView(APIView):
             )
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# =================================================================
+# VUE : GESTION DES PROPOSITIONS DE MENTORAT
+# =================================================================
+from .models import PropositionsMentorat
+
+class PropositionMentoratView(APIView):
+    def post(self, request):
+        serializer = PropositionMentoratSerializer(data=request.data)
+        if serializer.is_valid():
+            proposition = serializer.save()
+            return Response(
+                {
+                    "message": "Annonce publiée avec succès !",
+                    "proposition": PropositionMentoratSerializer(proposition).data
+                },
+                status=status.HTTP_201_CREATED
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request):
+        propositions = PropositionsMentorat.objects.all().order_by('-date_publication')
+        serializer = PropositionMentoratSerializer(propositions, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

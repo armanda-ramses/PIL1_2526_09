@@ -114,7 +114,6 @@ class ProfilCompetences(models.Model):
 
 # 4. TABLE : disponibilites
 class Disponibilites(models.Model):
-    id_disponibilite = models.AutoField(primary_key=True)
     utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE, db_column='id_utilisateur')
     jour_semaine = models.CharField(max_length=15, choices=JourSemaineChoices.choices)
     heure_debut = models.TimeField()
@@ -126,9 +125,8 @@ class Disponibilites(models.Model):
 
 # 5. TABLE : propositions_mentorat
 class PropositionsMentorat(models.Model):
-    id_proposition = models.AutoField(primary_key=True)
-    utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE, db_column='id_utilisateur')
-    matiere = models.ForeignKey(Matieres, on_delete=models.CASCADE, db_column='id_matiere')
+    utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
+    matiere = models.ForeignKey(Matieres, on_delete=models.CASCADE)
     type_proposition = models.CharField(max_length=10, choices=PropositionTypeChoices.choices)
     format_session = models.CharField(max_length=15, choices=FormatSessionChoices.choices)
     date_publication = models.DateTimeField(auto_now_add=True)
@@ -143,9 +141,8 @@ class PropositionsMentorat(models.Model):
 
 # 6. TABLE : matchings
 class Matchings(models.Model):
-    id_matching = models.AutoField(primary_key=True)
-    mentor = models.ForeignKey(Utilisateur, on_delete=models.CASCADE, db_column='id_mentor', related_name='match_mentors')
-    mentore = models.ForeignKey(Utilisateur, on_delete=models.CASCADE, db_column='id_mentore', related_name='match_mentores')
+    mentor = models.ForeignKey(Utilisateur, on_delete=models.CASCADE, related_name='match_mentors')
+    mentore = models.ForeignKey(Utilisateur, on_delete=models.CASCADE, related_name='match_mentores')
     score_compatibilite = models.DecimalField(max_digits=5, decimal_places=2)
     date_matching = models.DateTimeField(auto_now_add=True)
 

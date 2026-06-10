@@ -234,12 +234,25 @@
           <h3>⚡ Nouvelle publication</h3>
           <form id="offer-creation-form">
             <div class="form-group" style="margin-top:12px;">
-              <label>Titre de l'annonce</label>
-              <input type="text" id="offer-title" placeholder="Ex: Aide en Algèbre linéaire" class="input-field" required>
+              <label>Type d'annonce</label>
+              <select id="offer-type" class="select-field" required>
+                <option value="offre">J'offre mon aide (Mentor)</option>
+                <option value="demande">J'ai besoin d'aide (Mentoré)</option>
+              </select>
             </div>
             <div class="form-group">
-              <label>Description</label>
-              <textarea id="offer-desc" placeholder="Décrivez votre besoin..." class="textarea-field" rows="4" required></textarea>
+              <label>Matière</label>
+              <select id="offer-matiere" class="select-field" required>
+                <option value="">Chargement des matières...</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Format de la session</label>
+              <select id="offer-format" class="select-field" required>
+                <option value="en ligne">En ligne</option>
+                <option value="presentiel">Présentiel</option>
+                <option value="les deux">Les deux</option>
+              </select>
             </div>
             <button type="submit" class="btn-save-submit" style="width:100%; margin-top: 10px;">🚀 Publier l'annonce</button>
           </form>
