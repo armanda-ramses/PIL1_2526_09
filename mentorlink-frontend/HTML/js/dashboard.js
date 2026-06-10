@@ -225,7 +225,7 @@ async function chargerOffresEtDemandes() {
             let html = "";
             propositions.forEach(prop => {
                 const date = new Date(prop.date_publication).toLocaleDateString();
-                const typeText = prop.type_proposition === 'mentorat' ? 'Offre de mentorat' : 'Demande d\\'accompagnement';
+                const typeText = prop.type_proposition === 'mentorat' ? 'Offre de mentorat' : "Demande d'accompagnement";
                 const matiere = prop.nom_matiere || "Matière inconnue";
                 const format = prop.format_session || "Non spécifié";
                 
