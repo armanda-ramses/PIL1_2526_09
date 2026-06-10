@@ -6,26 +6,128 @@ body {
   color: #1a1a1a;
 }
 
-/* TOPBAR */
+/* ==========================================
+   TOPBAR AVEC NAVIGATION (MIS À JOUR)
+   ========================================== */
 .topbar {
   background: white;
   border-bottom: 1px solid #e8e8e8;
-  height: 56px;
+  height: 70px; /* Augmenté légèrement pour laisser respirer la navigation */
   display: flex;
   align-items: center;
+  justify-content: space-between; /* Espace équitablement Logo, Onglets et Profil */
   padding: 0 32px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
-.logo { display: flex; align-items: center; gap: 10px; }
-.logo-icon {
-  width: 28px; height: 28px; border-radius: 8px;
-  background: #2563eb; color: white;
-  font-weight: 700; font-size: 11px;
-  display: flex; align-items: center; justify-content: center;
-}
-.logo-title { font-weight: 700; font-size: 13px; }
-.logo-sub { font-size: 9px; color: #888; }
 
-/* MAIN */
+/* Bloc Logo */
+.logo { display: flex; align-items: center; gap: 12px; }
+.logo-icon {
+  width: 45px;  /* Ajusté pour accueillir ton image IFRI.png proprement */
+  height: 45px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.logo-icon img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.logo-title { font-weight: 800; font-size: 15px; color: #1e3a8a; line-height: 1.2; }
+.logo-sub { font-size: 11px; color: #2563eb; font-weight: 600; }
+
+/* Liens de navigation centraux */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  color: #4b5563;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.nav-item:hover {
+  background: #f3f4f6;
+  color: #1f2937;
+}
+.nav-item.active {
+  background: #eff6ff;
+  color: #2563eb;
+}
+.nav-icon {
+  font-size: 16px;
+}
+
+/* Zone Utilisateur & Droite */
+.topbar-user {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.notification-trigger {
+  position: relative;
+  cursor: pointer;
+  font-size: 20px;
+  color: #4b5563;
+  padding: 4px;
+}
+.notification-badge-dot {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 8px;
+  height: 8px;
+  background-color: #2563eb;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+.avatar-circle {
+  width: 38px;
+  height: 38px;
+  background: #a855f7; /* Couleur violette de l'avatar AK */
+  color: white;
+  font-weight: 700;
+  font-size: 13px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-logout {
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  color: #4b5563;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.btn-logout:hover {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  color: #dc2626;
+}
+
+/* ==========================================
+   MAIN & RENDER (RESTE DU CODE CONSERVÉ)
+   ========================================== */
 .main { max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
 
 /* PAGE HEADER */
@@ -158,22 +260,17 @@ body {
 /* RIGHT COL */
 .right-col { display: flex; flex-direction: column; gap: 20px; }
 
-/* RESPONSIVE */
+/* RESPONSIVE ADDITIONS */
+@media (max-width: 900px) {
+  .topbar {
+    flex-direction: column;
+    height: auto;
+    padding: 16px;
+    gap: 12px;
+  }
+}
 @media (max-width: 768px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .bottom-grid { grid-template-columns: 1fr; }
   .page-header { flex-direction: column; gap: 16px; }
-}
-
-
-.logo-icon img {
-  width: 100%;  /* Le logo prendra la largeur de son conteneur */
-  height: auto; /* Garde les proportions de l'image */
-  display: block;
-}
-
-/* Optionnel : Ajuste la taille du conteneur si nécessaire */
-.logo-icon {
-  width: 40px;  /* Ajuste selon tes besoins */
-  height: 40px;
 }

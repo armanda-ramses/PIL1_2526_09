@@ -13,12 +13,39 @@
   <header class="topbar">
     <div class="logo">
       <div class="logo-icon">
-        <img src="IFRI.png" alt="Logo Mon Entreprise">
+        <img src="IFRI.png" alt="Logo IFRI">
       </div>
       <div>
         <div class="logo-title">IFRI</div>
         <div class="logo-sub">MentorLink</div>
       </div>
+    </div>
+
+    <nav class="nav-links">
+      <button class="nav-item active" data-pane="home">
+        <span class="nav-icon">💡</span> Tableau de bord
+      </button>
+      <button class="nav-item" data-pane="directory">
+        <span class="nav-icon">👥</span> Mise en relation
+      </button>
+      <button class="nav-item" data-pane="messages">
+        <span class="nav-icon">💬</span> Messages
+      </button>
+      <button class="nav-item" data-pane="profile">
+        <span class="nav-icon">👤</span> Profil
+      </button>
+      <button class="nav-item" data-pane="offers">
+        <span class="nav-icon">🤝</span> Offres et demandes
+      </button>
+    </nav>
+
+    <div class="topbar-user">
+      <div class="notification-trigger">
+        <span class="chat-icon-top">💬</span>
+        <span class="notification-badge-dot"></span>
+      </div>
+      <div class="avatar-circle" id="topbar-avatar">AK</div>
+      <button class="btn-logout" id="btn-logout">Déconnexion</button>
     </div>
   </header>
 
