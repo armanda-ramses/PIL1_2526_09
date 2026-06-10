@@ -1,0 +1,150 @@
+{
+  "info": {
+    "name": "IFRI_MentorLink Messaging API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "mentorlink-messaging"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://127.0.0.1:8000" },
+    { "key": "user1_id", "value": "1" },
+    { "key": "user2_id", "value": "2" },
+    { "key": "conversation_id", "value": "1" },
+    { "key": "message_text", "value": "Salut, c'est un test" }
+  ],
+  "item": [
+    {
+      "name": "List Conversations",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/api/conversations/", "host": ["{{baseUrl}}"], "path": ["api","conversations",""] }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "pm.test('Response is JSON array', function () {",
+              "  pm.response.to.be.json;",
+              "  pm.expect(pm.response.json()).to.be.an('array');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create Conversation",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key":"Content-Type", "value":"application/json" }
+        ],
+        "body": { "mode": "raw", "raw": "{\"utilisateur1_id\": {{user1_id}}, \"utilisateur2_id\": {{user2_id}}}" },
+        "url": { "raw": "{{baseUrl}}/api/conversations/", "host": ["{{baseUrl}}"], "path": ["api","conversations",""] }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 201', function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "var jsonData = pm.response.json();",
+              "pm.test('Conversation ID exists', function () {",
+              "  pm.expect(jsonData.id_conversation).to.not.be.undefined;",
+              "});",
+              "if (jsonData.id_conversation) {",
+              "  pm.environment.set('conversation_id', jsonData.id_conversation);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Matching Results",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/api/matching/?user_id={{user1_id}}", "host": ["{{baseUrl}}"], "path": ["api","matching",""] , "query":[{"key":"user_id","value":"{{user1_id}}"}] }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "pm.test('Response is JSON array', function () {",
+              "  pm.response.to.be.json;",
+              "  pm.expect(pm.response.json()).to.be.an('array');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "List Messages (by conversation)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/api/messages/?conversation_id={{conversation_id}}", "host": ["{{baseUrl}}"], "path": ["api","messages",""], "query": [{"key":"conversation_id","value":"{{conversation_id}}"}] }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "pm.test('Response is JSON array', function () {",
+              "  pm.response.to.be.json;",
+              "  pm.expect(pm.response.json()).to.be.an('array');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Send Message",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key":"Content-Type", "value":"application/json" }
+        ],
+        "body": { "mode": "raw", "raw": "{\"conversation_id\": {{conversation_id}}, \"expediteur_id\": {{user1_id}}, \"contenu_message\": \"{{message_text}}\"}" },
+        "url": { "raw": "{{baseUrl}}/api/messages/", "host": ["{{baseUrl}}"], "path": ["api","messages",""] }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 201', function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "var jsonData = pm.response.json();",
+              "pm.test('Message saved with content', function () {",
+              "  pm.expect(jsonData.contenu_message).to.eql(pm.environment.get('message_text'));",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    }
+  ]
+}
