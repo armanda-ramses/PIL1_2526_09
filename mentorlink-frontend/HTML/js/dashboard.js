@@ -43,6 +43,12 @@ function initNavigation() {
         if (trigger) {
             e.preventDefault();
             switchPane(trigger.getAttribute("data-pane-trigger"));
+            
+            if (trigger.classList.contains("btn-contact")) {
+                const targetId = trigger.getAttribute("data-target-user-id");
+                const targetName = trigger.getAttribute("data-target-name");
+                if (targetId) ouvrirConversation(targetId, targetName);
+            }
         }
     });
 }
@@ -144,7 +150,7 @@ async function chargerSuggestionsEtProfils() {
                     <p><strong>Matière:</strong> ${match.matiere}</p>
                     <p><strong>Format:</strong> ${match.format_session}</p>
                     <p><strong>Dispos communes:</strong> ${match.disponibilites_communes.join(", ")}</p>
-                    <button class="btn-primary" style="padding: 5px 10px; font-size: 12px; margin-top: 10px;">Proposer mentorat</button>
+                    <button class="btn-primary btn-contact" data-pane-trigger="messages" data-target-user-id="${match.utilisateur_id}" data-target-name="${match.prenom} ${match.nom}" style="padding: 5px 10px; font-size: 12px; margin-top: 10px;">Proposer mentorat</button>
                 </div>
                 `;
             });
@@ -165,12 +171,13 @@ async function chargerSuggestionsEtProfils() {
 
  //5. SYSTÈME DE MESSAGERIE EN TEMPS RÉEL
 
+let currentConversationId = null;
+
 async function chargerMessagerie() {
     const threadsContainer = document.getElementById("chat-threads-container");
-    const messagesContainer = document.getElementById("chat-messages-container");
-
-    if (threadsContainer) threadsContainer.innerHTML = "Chargement...";
-    if (messagesContainer) messagesContainer.innerHTML = "Sélectionnez une conversation";
+    if (!threadsContainer) return;
+    
+    threadsContainer.innerHTML = "Chargement...";
 
     const savedUser = localStorage.getItem("ml_logged_user");
     if (!savedUser) return;
@@ -183,31 +190,167 @@ async function chargerMessagerie() {
         if (response.ok && conversations.length > 0) {
             let html = "";
             conversations.forEach(conv => {
-                // Trouver l'autre participant (celui qui n'est pas moi)
                 let otherParticipant = "Utilisateur inconnu";
-                if (conv.utilisateur1_details && conv.utilisateur1_details.id !== user.id) {
-                    otherParticipant = `${conv.utilisateur1_details.prenom} ${conv.utilisateur1_details.nom}`;
-                } else if (conv.utilisateur2_details && conv.utilisateur2_details.id !== user.id) {
-                    otherParticipant = `${conv.utilisateur2_details.prenom} ${conv.utilisateur2_details.nom}`;
+                let otherParticipantId = null;
+                if (conv.utilisateur1 && conv.utilisateur1.id !== user.id) {
+                    otherParticipant = `${conv.utilisateur1.prenom} ${conv.utilisateur1.nom}`;
+                    otherParticipantId = conv.utilisateur1.id;
+                } else if (conv.utilisateur2 && conv.utilisateur2.id !== user.id) {
+                    otherParticipant = `${conv.utilisateur2.prenom} ${conv.utilisateur2.nom}`;
+                    otherParticipantId = conv.utilisateur2.id;
                 }
 
                 const date = new Date(conv.date_creation).toLocaleDateString();
                 html += `
-                <div class="chat-thread" style="padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
+                <div class="chat-thread" style="padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;" onclick="chargerMessages(${conv.id}, '${otherParticipant.replace(/'/g, "\\'")}')">
                     <strong>${otherParticipant}</strong><br>
                     <small>Créée le ${date}</small>
                 </div>
                 `;
             });
-            if (threadsContainer) threadsContainer.innerHTML = html;
+            threadsContainer.innerHTML = html;
         } else {
-            if (threadsContainer) threadsContainer.innerHTML = "<p>Aucune conversation en cours.</p>";
+            threadsContainer.innerHTML = "<p>Aucune conversation en cours.</p>";
         }
     } catch (error) {
         console.error("Erreur de messagerie:", error);
-        if (threadsContainer) threadsContainer.innerHTML = "<p>Erreur serveur.</p>";
+        threadsContainer.innerHTML = "<p>Erreur serveur.</p>";
     }
 }
+
+async function ouvrirConversation(targetId, targetName) {
+    const savedUser = localStorage.getItem("ml_logged_user");
+    if (!savedUser) return;
+    const user = JSON.parse(savedUser);
+    
+    if (user.id == targetId) {
+        alert("Vous ne pouvez pas vous contacter vous-même.");
+        return;
+    }
+
+    try {
+        // Vérifier si une conversation existe
+        const response = await fetch(`http://127.0.0.1:8000/api/messaging/conversations/?user_id=${user.id}`);
+        const conversations = await response.json();
+        
+        let existingConv = null;
+        if (response.ok) {
+            existingConv = conversations.find(c => 
+                (c.utilisateur1 && c.utilisateur1.id == targetId) || 
+                (c.utilisateur2 && c.utilisateur2.id == targetId)
+            );
+        }
+        
+        if (existingConv) {
+            chargerMessages(existingConv.id, targetName);
+        } else {
+            // Créer une nouvelle conversation
+            const createRes = await fetch("http://127.0.0.1:8000/api/messaging/conversations/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    utilisateur1_id: user.id,
+                    utilisateur2_id: targetId
+                })
+            });
+            
+            if (createRes.ok) {
+                const newConv = await createRes.json();
+                chargerMessagerie(); // Refresh threads
+                chargerMessages(newConv.id, targetName);
+            } else {
+                alert("Erreur lors de la création de la conversation.");
+            }
+        }
+    } catch (error) {
+        console.error("Erreur:", error);
+    }
+}
+
+async function chargerMessages(conversationId, targetName) {
+    currentConversationId = conversationId;
+    
+    document.getElementById("chat-window-empty").style.display = "none";
+    document.getElementById("chat-window-active").style.display = "flex";
+    
+    document.getElementById("chat-header-name").textContent = targetName;
+    document.getElementById("chat-header-avatar").textContent = targetName.substring(0, 2).toUpperCase();
+    
+    const messagesContainer = document.getElementById("chat-messages-container");
+    messagesContainer.innerHTML = "Chargement des messages...";
+    
+    const savedUser = localStorage.getItem("ml_logged_user");
+    const user = JSON.parse(savedUser);
+
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/api/messaging/messages/?conversation_id=${conversationId}`);
+        const messages = await response.json();
+        
+        if (response.ok) {
+            if (messages.length === 0) {
+                messagesContainer.innerHTML = "<p style='text-align: center; color: #64748b; margin-top: 20px;'>Aucun message. Commencez la discussion !</p>";
+                return;
+            }
+            
+            let html = "";
+            messages.forEach(msg => {
+                const isMe = msg.expediteur && msg.expediteur.id === user.id;
+                const time = new Date(msg.date_envoi).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                html += `
+                <div style="margin-bottom: 15px; display: flex; flex-direction: column; align-items: ${isMe ? 'flex-end' : 'flex-start'};">
+                    <div style="max-width: 70%; padding: 10px 15px; border-radius: 18px; ${isMe ? 'background: #4f46e5; color: white;' : 'background: #f1f5f9; color: #1e293b;'}">
+                        ${msg.contenu_message}
+                    </div>
+                    <small style="color: #94a3b8; font-size: 0.75rem; margin-top: 4px;">${time}</small>
+                </div>
+                `;
+            });
+            messagesContainer.innerHTML = html;
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+    } catch (error) {
+        console.error(error);
+        messagesContainer.innerHTML = "<p>Erreur lors du chargement des messages.</p>";
+    }
+}
+
+// Initialiser le formulaire d'envoi de message (doit être appelé une seule fois, ou dans initFormulaires)
+document.addEventListener("DOMContentLoaded", () => {
+    const chatForm = document.getElementById("chat-send-form");
+    if (chatForm) {
+        chatForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            if (!currentConversationId) return;
+            
+            const input = document.getElementById("chat-input-message");
+            const contenu = input.value.trim();
+            if (!contenu) return;
+            
+            const savedUser = localStorage.getItem("ml_logged_user");
+            const user = JSON.parse(savedUser);
+            
+            try {
+                const res = await fetch("http://127.0.0.1:8000/api/messaging/messages/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        conversation_id: currentConversationId,
+                        expediteur_id: user.id,
+                        contenu_message: contenu
+                    })
+                });
+                
+                if (res.ok) {
+                    input.value = "";
+                    chargerMessages(currentConversationId, document.getElementById("chat-header-name").textContent);
+                }
+            } catch (error) {
+                console.error("Erreur d'envoi:", error);
+            }
+        });
+    }
+});
 
 
  //6. FLUX DES OFFRES ET DEMANDES D'ACCOMPAGNEMENT
@@ -242,7 +385,7 @@ async function chargerOffresEtDemandes() {
                         <span style="display: inline-block; padding: 4px 8px; background: #f3f4f6; color: #4b5563; border-radius: 4px; font-size: 0.9em; margin-left: 5px;">${format}</span>
                     </div>
                     <p style="margin: 0 0 10px 0; color: #1e293b; font-size: 0.95em;">Par ${userText}</p>
-                    <button class="btn-primary" style="margin-top: 10px; padding: 6px 12px; font-size: 0.9em;">Contacter</button>
+                    <button class="btn-primary btn-contact" data-pane-trigger="messages" data-target-user-id="${prop.auteur_id}" data-target-name="${userText}" style="margin-top: 10px; padding: 6px 12px; font-size: 0.9em;">Contacter</button>
                 </div>
                 `;
             });

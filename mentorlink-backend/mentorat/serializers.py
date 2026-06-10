@@ -228,13 +228,14 @@ class PropositionMentoratSerializer(serializers.ModelSerializer):
     utilisateur_id = serializers.IntegerField(write_only=True)
     utilisateur_nom = serializers.CharField(source='utilisateur.nom', read_only=True)
     utilisateur_prenom = serializers.CharField(source='utilisateur.prenom', read_only=True)
+    auteur_id = serializers.IntegerField(source='utilisateur.id', read_only=True)
 
     class Meta:
         model = PropositionsMentorat
         fields = [
             'id', 'utilisateur_id', 'id_matiere', 'nom_matiere', 
             'type_proposition', 'format_session', 'date_publication',
-            'utilisateur_nom', 'utilisateur_prenom'
+            'utilisateur_nom', 'utilisateur_prenom', 'auteur_id'
         ]
 
     def create(self, validated_data):
