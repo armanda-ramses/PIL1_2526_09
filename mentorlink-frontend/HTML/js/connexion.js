@@ -28,7 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     // 3. Connexion réussie — sauvegarder les infos
                     localStorage.setItem("access_token", data.access_token);
                     localStorage.setItem("refresh_token", data.refresh_token);
-                    localStorage.setItem("utilisateur", JSON.stringify(data.utilisateur));
+                    localStorage.setItem("ml_logged_user", JSON.stringify(data.utilisateur));
+             
 
                     alert("Connexion réussie !");
                     window.location.href = "dashboard.html";

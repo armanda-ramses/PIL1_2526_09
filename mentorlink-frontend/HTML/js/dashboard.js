@@ -188,11 +188,13 @@ function initFormulaires() {
         });
     }
 
-    const btnLogout = document.getElementById("btn-logout");
+   /* const btnLogout = document.getElementById("btn-logout");
     if (btnLogout) {
         btnLogout.addEventListener("click", () => {
             localStorage.removeItem("ml_logged_user");
+            localStorage.removeItem("refresh_token");
+            localStorage.removeItem("access_token");
             window.location.href = "connexion.html";
         });
-    }
+    } */
 }
