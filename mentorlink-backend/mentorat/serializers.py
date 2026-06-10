@@ -125,12 +125,19 @@ class MatiereFiliereNiveauSerializer(serializers.ModelSerializer):
 # SERIALIZER DU PROFIL UTILISATEUR
 # =================================================================
 class UtilisateurSerializer(serializers.ModelSerializer):
+    noms_matieres = serializers.SerializerMethodField()
+
     class Meta:
         model = Utilisateur
         fields = [
             'id', 'nom', 'prenom', 'email', 'telephone',
-            'filiere', 'niveau_etudes', 'photo_profil', 'bio'
+            'filiere', 'niveau_etudes', 'photo_profil', 'bio',
+            'noms_matieres'
         ]
+
+    def get_noms_matieres(self, obj):
+        competences = ProfilCompetences.objects.filter(utilisateur=obj)
+        return [comp.matiere.nom_matiere for comp in competences]
 
 # =================================================================
 # SERIALIZER DE CONNEXION
