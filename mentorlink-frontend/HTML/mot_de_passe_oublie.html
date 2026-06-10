@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>MentorLink - Mot de passe oublié</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <script src="js/mot_de_passe_oublie.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <div class="logo-container">
+            <img src="IFRI.png" alt="Logo IFRI MentorLink" style="max-height: 70px; width: auto; object-fit: contain;">
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h1 class="title">Réinitialisation</h1>
+                <p class="subtitle" id="form-subtitle">Récupérez l'accès à votre compte.</p>
+
+                <!-- ETAPE 1 : DEMANDER L'EMAIL -->
+                <form action="#" method="POST" id="step1-form">
+                    <div class="form-group">
+                        <label for="identifiant">E-mail ou numéro de téléphone</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">✉</span>
+                            <input class="form-control" id="identifiant" name="identifiant" placeholder="nom@entreprise.com ou +229..." type="text" required>
+                        </div>
+                    </div>
+                    <button class="btn-primary" type="submit" id="btn-step1">Envoyer le code</button>
+                </form>
+
+                <!-- ETAPE 2 : VERIFIER LE CODE (Masqué par défaut) -->
+                <form action="#" method="POST" id="step2-form" style="display: none;">
+                    <div class="form-group">
+                        <label for="code">Code de vérification (6 chiffres)</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">🔑</span>
+                            <input class="form-control" id="code" name="code" placeholder="123456" type="text" maxlength="6" required>
+                        </div>
+                    </div>
+                    <button class="btn-primary" type="submit" id="btn-step2">Vérifier le code</button>
+                </form>
+
+                <!-- ETAPE 3 : NOUVEAU MOT DE PASSE (Masqué par défaut) -->
+                <form action="#" method="POST" id="step3-form" style="display: none;">
+                    <div class="form-group">
+                        <label for="nouveau_password">Nouveau mot de passe</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">🔒</span>
+                            <input class="form-control" id="nouveau_password" name="nouveau_password" placeholder="••••••••" type="password" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmer_password">Confirmez le mot de passe</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">🔒</span>
+                            <input class="form-control" id="confirmer_password" name="confirmer_password" placeholder="••••••••" type="password" required>
+                        </div>
+                    </div>
+                    <button class="btn-primary" type="submit" id="btn-step3">Réinitialiser le mot de passe</button>
+                </form>
+
+            </div>
+
+            <div class="card-footer-bar">
+                <a href="connexion.html">Retour à la connexion</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
