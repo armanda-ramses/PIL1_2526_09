@@ -31,38 +31,47 @@ document.addEventListener("DOMContentLoaded", function () {
     // ==========================================
     // 2. RÉCUPÉRATION SÉCURISÉE DE L'UTILISATEUR
     // ==========================================
-    const savedUser = localStorage.getItem("profil_utilisateur");
+    const savedUser = localStorage.getItem("ml_logged_user");
     
     if (!savedUser) {
-        alert("Aucune session trouvée. Veuillez vous inscrire d'abord.");
-        window.location.href = "inscription.html"; 
+        alert("Aucune session trouvée. Veuillez vous connecter d'abord.");
+        window.location.href = "connexion.html"; 
         return;
     }
 
     const user = JSON.parse(savedUser);
     
-    // Extraction des données du payload
-    const prenom = user.identite?.prenom || "Étudiant";
-    const nom = user.identite?.nom || "";
+    // Extraction des données du format Backend
+    const prenom = user.prenom || "Étudiant";
+    const nom = user.nom || "";
     const fullname = `${prenom} ${nom}`.trim();
-    const email = user.identite?.email || "non-renseigne@ifri.uac.bj";
-    const telephone = user.identite?.contact || "Non renseigné";
-    const role = user.identite?.role || "Mentoré";
-    const filiere = user.academique?.filiere || "Non spécifiée";
-    const niveau = user.academique?.niveau || "Non spécifié";
-    const matieres = user.competences?.matieres || [];
-    const disponibilites = user.disponibilites || {};
+    const email = user.email || "non-renseigne@ifri.uac.bj";
+    const telephone = user.telephone || "Non renseigné";
+    const role = "Mentoré"; 
+    const filiere = user.filiere || "Non spécifiée";
+    const niveau = user.niveau_etudes || "Non spécifié";
+    const matieres = user.noms_matieres || [];
+    const disponibilites = user.mes_dispos || []; 
 
     const initiales = (prenom[0] + (nom[0] || "")).toUpperCase();
 
-    // Injection Textes de base & Avatars
+    // ==========================================
+    // 3. INJECTION DYNAMIQUE DES DONNÉES DE L'UTILISATEUR
+    // ==========================================
+    
+    // Prénom dans l'en-tête de la maquette nettoyée
+    if (document.getElementById("user-firstname")) {
+        document.getElementById("user-firstname").textContent = prenom;
+    }
+    
+    // Sidebar & Topbar
     if (document.getElementById("sidebar-username")) document.getElementById("sidebar-username").textContent = fullname;
     if (document.getElementById("sidebar-role")) document.getElementById("sidebar-role").textContent = role;
     if (document.getElementById("sidebar-avatar")) document.getElementById("sidebar-avatar").textContent = initiales;
     if (document.getElementById("topbar-avatar")) document.getElementById("topbar-avatar").textContent = initiales;
     if (document.getElementById("welcome-title")) document.getElementById("welcome-title").textContent = `Ravi de vous revoir, ${prenom} ! 👋`;
 
-    // KPIs et Fiche infos (Accueil)
+    // Fiches infos & KPIs existants
     if (document.getElementById("kpi-filiere")) document.getElementById("kpi-filiere").textContent = filiere;
     if (document.getElementById("kpi-status-role")) document.getElementById("kpi-status-role").textContent = role;
     if (document.getElementById("info-email")) document.getElementById("info-email").textContent = email;
@@ -78,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (document.getElementById("edit-profile-email")) document.getElementById("edit-profile-email").value = email;
     if (document.getElementById("edit-profile-phone")) document.getElementById("edit-profile-phone").value = telephone;
 
-    // Rendu des Matières Cibles
+    // Rendu des badges de Matières Cibles
     const skillsContainer = document.getElementById("user-skills-list");
     if (skillsContainer) {
         skillsContainer.innerHTML = ""; 
@@ -96,13 +105,26 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ==========================================
-    // 3. RENDU DE LA MATRICE DES HORAIRES
+    // 4. DATE DYNAMIQUE DANS LE SUBTITLE
     // ==========================================
-    const jours = ["lundi", "mardi", "mercredi", "jeudi", "vendredi"];
+    const now = new Date();
+    const joursSemaine = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
+    const mois = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+
+    const dateStr = `${joursSemaine[now.getDay()]} ${now.getDate()} ${mois[now.getMonth()]} ${now.getFullYear()}`;
+    const subtitle = document.querySelector(".page-header p");
+    if (subtitle) {
+        subtitle.textContent = `Voici ce qui se passe dans votre réseau — ${dateStr}.`;
+    }
+
+    // ==========================================
+    // 5. RENDU ET COMPTAGE DE LA MATRICE DES HORAIRES
+    // ==========================================
+    const joursMatrice = ["lundi", "mardi", "mercredi", "jeudi", "vendredi"];
     const heuresKeys = ["08h-10h", "10h-12h", "14h-16h", "16h-18h"];
     let activeSlotsCount = 0;
 
-    // Injection d'un micro-style CSS de secours pour les badges actifs/inactifs
+    // Injection du style CSS pour les états de slots
     const styleNode = document.createElement("style");
     styleNode.textContent = `
         .slot-active { background-color: #10b981 !important; color: white !important; font-weight: bold; padding: 6px 12px; border-radius: 6px; display: inline-block; }
@@ -110,36 +132,107 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
     document.head.appendChild(styleNode);
 
-    jours.forEach(jour => {
-        const slotsDuJour = disponibilites[jour] || [];
-        const slotsNettoyes = Array.isArray(slotsDuJour) 
-            ? slotsDuJour.map(s => String(s).replace(/[:h\s-]/g, '')) 
-            : [];
-
+    // Initialisation globale par défaut à "Inactif"
+    joursMatrice.forEach(jour => {
         heuresKeys.forEach(heure => {
-            const heureNettoyee = heure.replace(/[:h\s-]/g, '');
-            const coché = slotsNettoyes.includes(heureNettoyee);
             const slotElement = document.getElementById(`slot-${jour}-${heure}`);
-
             if (slotElement) {
-                if (coché) {
-                    slotElement.className = "schedule-slot-badge slot-active";
-                    slotElement.textContent = heure;
-                    activeSlotsCount++;
-                } else {
-                    slotElement.className = "schedule-slot-badge slot-inactive";
-                    slotElement.textContent = "—";
-                }
+                slotElement.className = "schedule-slot-badge slot-inactive";
+                slotElement.textContent = "—";
             }
         });
     });
 
+    // Activation dynamique selon le tableau 'mes_dispos'
+    if (Array.isArray(disponibilites)) {
+        disponibilites.forEach(dispo => {
+            const jour = dispo.jour_semaine.toLowerCase();
+            let tranche = null;
+            
+            if (dispo.heure_debut.startsWith("08")) tranche = "08h-10h";
+            else if (dispo.heure_debut.startsWith("10")) tranche = "10h-12h";
+            else if (dispo.heure_debut.startsWith("13") || dispo.heure_debut.startsWith("14")) tranche = "14h-16h";
+            else if (dispo.heure_debut.startsWith("16") || dispo.heure_debut.startsWith("17") || dispo.heure_debut.startsWith("18")) tranche = "16h-18h";
+
+            if (tranche) {
+                const slotElement = document.getElementById(`slot-${jour}-${tranche}`);
+                if (slotElement) {
+                    slotElement.className = "schedule-slot-badge slot-active";
+                    slotElement.textContent = tranche;
+                    activeSlotsCount++;
+                }
+            }
+        });
+    }
+
+    // Injection du score total calculé dans ton compteur de slots
+    // (Tu peux associer cette valeur à ton compteur de "Connexions actives" ou une carte dédiée aux créneaux)
     if (document.getElementById("kpi-slots-count")) {
         document.getElementById("kpi-slots-count").textContent = activeSlotsCount;
     }
 
     // ==========================================
-    // 4. MOTEUR INTERNE DE MESSAGERIE
+    // 6. INTERACTIONS ET REDIRECTIONS DE L'INTERFACE
+    // ==========================================
+    
+    // Clic bouton d'en-tête principal
+    const btnPrimary = document.querySelector(".btn-primary");
+    if (btnPrimary) {
+        btnPrimary.addEventListener("click", function () {
+            window.location.href = "mentors.html";
+        });
+    }
+
+    // Clic sur le lien global "Voir tout"
+    const lienVoirTout = document.querySelector(".link-voir");
+    if (lienVoirTout) {
+        lienVoirTout.addEventListener("click", function (e) {
+            e.preventDefault();
+            window.location.href = "mentors.html";
+        });
+    }
+
+    // Gestion du clic sur les lignes de suggestions injectées ou statiques
+    document.querySelectorAll(".suggestion").forEach(function (el) {
+        el.style.cursor = "pointer";
+        el.addEventListener("click", function () {
+            const nameEl = el.querySelector(".name");
+            if (nameEl) {
+                const name = nameEl.textContent;
+                window.location.href = "profil.html?nom=" + encodeURIComponent(name);
+            }
+        });
+    });
+
+    // Gestion des animations d'hover sur les lignes d'activité
+    document.querySelectorAll(".activity-item").forEach(function (el) {
+        el.style.transition = "background 0.15s";
+        el.style.borderRadius = "8px";
+        el.style.padding = "4px 6px";
+        el.style.margin = "0 -6px";
+        el.addEventListener("mouseenter", function () {
+            el.style.background = "#f5f7fa";
+        });
+        el.addEventListener("mouseleave", function () {
+            el.style.background = "transparent";
+        });
+    });
+
+    // Gestion du clic sur les lignes de séances
+    document.querySelectorAll(".session").forEach(function (el) {
+        el.style.cursor = "pointer";
+        el.addEventListener("click", function () {
+            const subjectEl = el.querySelector(".session-subject");
+            const dayEl = el.querySelector(".session-day");
+            if (subjectEl && dayEl) {
+                alert(`Redirection vers la séance : ${subjectEl.textContent} du ${dayEl.textContent}`);
+                // window.location.href = "seance.html?subject=" + encodeURIComponent(subjectEl.textContent);
+            }
+        });
+    });
+
+    // ==========================================
+    // 7. MOTEUR INTERNE DE MESSAGERIE
     // ==========================================
     window.sendMessage = function() {
         const input = document.getElementById("chat-msg-input");
@@ -156,12 +249,10 @@ document.addEventListener("DOMContentLoaded", function () {
         row.appendChild(bubble);
         feed.appendChild(row);
         
-        // Auto-scroll vers le bas
         feed.scrollTop = feed.scrollHeight;
         input.value = "";
     };
 
-    // Permettre l'envoi en pressant "Entrée"
     document.getElementById("chat-msg-input")?.addEventListener("keypress", function(e) {
         if (e.key === "Enter") {
             sendMessage();

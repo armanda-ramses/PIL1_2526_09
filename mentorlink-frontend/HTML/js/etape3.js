@@ -167,7 +167,6 @@ async function soumettreInscription(disponibilitesBrutes) {
         ...choixFaibles.map(m => ({ id_matiere: m.id_matiere, type_competence: "faible" }))
     ];
 
-
     const disponibilitesBackend = disponibilitesBrutes.map(d => {
         return {
             ...d,
@@ -194,16 +193,20 @@ async function soumettreInscription(disponibilitesBrutes) {
 
         if (response.ok) {
             localStorage.clear();
-            localStorage.setItem("utilisateur", JSON.stringify(data.utilisateur));
-
-            alert("Inscription réussie ! Bienvenue sur MentorLink !");
-            window.location.href = "connexion.html"; 
+            
+            
+            const userDashboard = data.utilisateur;
+            userDashboard.noms_matieres = [...choixForts, ...choixFaibles].map(m => m.nom_matiere);
+            userDashboard.mes_dispos = disponibilitesBackend;
+            localStorage.setItem("ml_logged_user", JSON.stringify(userDashboard));
+            alert("Inscription réussie ! Redirection vers le Dashboard...");
+            window.location.href = "dashboard.html"; 
         } else {
             const erreurs = typeof data === 'object' ? JSON.stringify(data) : data;
             alert("Erreur dans les données : " + erreurs);
         }
     } catch (error) {
-        alert("Erreur de connexion au serveur. Assurez-vous que le backend tourne !");
+        alert("Erreur de connexion au serveur Django.");
         console.error(error);
     }
 }

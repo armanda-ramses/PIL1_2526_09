@@ -3,318 +3,124 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MentorLink — Dashboard</title>
-  
+  <title>Dashboard — IFRI MentorLink</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  
-  <link rel="stylesheet" href="css/dashboard.css">
-  <script src="js/dashboard.js" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/dashboard.css" />
 </head>
-
 <body>
 
-<aside class="sidebar">
-  <div class="sidebar-brand">
-    <div class="brand-icon">🎓</div>
-    <span class="brand-name">MentorLink</span>
-  </div>
-  <ul class="sidebar-nav">
-    <li class="nav-item active" data-pane="home">
-      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      Accueil
-    </li>
-    <li class="nav-item" data-pane="messages">
-      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      Messagerie
-      <span class="nav-badge">1</span>
-    </li>
-    <li class="nav-item" data-pane="directory">
-      <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-      Annuaire Mentors
-    </li>
-    <li class="nav-item" data-pane="schedule">
-      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      Mes Créneaux
-    </li>
-    <li class="nav-item" data-pane="profile">
-      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      Mon Profil
-    </li>
-  </ul>
-  <div class="sidebar-user">
-    <div id="sidebar-avatar" class="user-avatar">--</div>
-    <div class="user-info">
-      <p id="sidebar-username">Chargement...</p>
-      <span id="sidebar-role">--</span>
-    </div>
-  </div>
-</aside>
-
-<div class="main">
   <header class="topbar">
-    <div class="topbar-title">
-      <h1 id="topbar-heading">Accueil</h1>
-      <p>IFRI — Université d'Abomey-Calavi</p>
-    </div>
-    <div class="topbar-right">
-      <button class="icon-btn">
-        <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-        <span class="notif-dot"></span>
-      </button>
-      <div id="topbar-avatar" class="user-avatar" style="width:36px;height:36px;font-size:13px;cursor:pointer;">--</div>
+    <div class="logo">
+      <div class="logo-icon">
+        <img src="IFRI.png" alt="Logo Mon Entreprise">
+      </div>
+      <div>
+        <div class="logo-title">IFRI</div>
+        <div class="logo-sub">MentorLink</div>
+      </div>
     </div>
   </header>
 
-  <div class="content">
+  <main class="main">
 
-    <div id="pane-home" class="pane active">
-      <div class="pane-greeting">
-        <h2 id="welcome-title">Bienvenue ! 👋</h2>
-        <p>Voici l'état actuel de votre profil et de vos préférences pour le mentorat.</p>
+    <div class="page-header">
+      <div>
+        <h1>Bonjour, <span id="user-firstname">Aminata</span> 👋</h1>
+        <p>Voici ce qui se passe dans votre réseau aujourd'hui.</p>
       </div>
-      <div class="kpi-grid">
-        <div class="kpi-card">
-          <div class="kpi-icon blue">
-            <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-          </div>
-          <div>
-            <div id="kpi-filiere" class="kpi-value">--</div>
-            <div class="kpi-label">Votre Filière</div>
-          </div>
+      <a href="mentors.html" class="btn-primary">Trouver des mentors →</a>
+    </div>
+
+    <div class="stats-grid" id="stats-container">
+      <div class="stat-card">
+        <div class="stat-icon icon-blue">👥</div>
+        <div class="stat-value" id="stat-connections">0</div>
+        <div class="stat-label">Connexions actives</div>
+        <div class="stat-sub blue" id="stat-connections-sub">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon icon-green">📖</div>
+        <div class="stat-value" id="stat-sessions-count">0</div>
+        <div class="stat-label">Séances complétées</div>
+        <div class="stat-sub green" id="stat-sessions-sub">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon icon-purple">💬</div>
+        <div class="stat-value" id="stat-messages">0</div>
+        <div class="stat-label">Messages envoyés</div>
+        <div class="stat-sub purple" id="stat-messages-sub">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon icon-orange">📈</div>
+        <div class="stat-value" id="stat-compatibility">0 %</div>
+        <div class="stat-label">Score de compatibilité</div>
+        <div class="stat-sub orange" id="stat-compatibility-sub">--</div>
+      </div>
+    </div>
+
+    <div class="bottom-grid">
+
+      <div class="card">
+        <div class="card-header">
+          <h2>Meilleures suggestions de mise en relation</h2>
+          <a href="mentors.html" class="link-voir">Voir tout →</a>
         </div>
-        <div class="kpi-card">
-          <div class="kpi-icon green">
-            <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-          </div>
-          <div>
-            <div id="kpi-status-role" class="kpi-value">--</div>
-            <div class="kpi-label">Statut Système</div>
-          </div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-icon violet">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          </div>
-          <div>
-            <div id="kpi-slots-count" class="kpi-value">0</div>
-            <div class="kpi-label">Créneaux Actifs</div>
+
+        <div id="suggestions-list-container">
+          <div class="suggestion" data-score="94">
+            <div class="avatar purple">MH</div>
+            <div class="suggestion-info">
+              <div class="suggestion-top">
+                <span class="name">Maxime Hounwanou</span>
+                <span class="badge badge-mentor">Mentor</span>
+              </div>
+              <div class="level">M2 · Génie Logiciel (GL)</div>
+              <div class="tags">
+                <span class="tag">Algorithmique</span>
+                <span class="tag">Architecture Logicielle</span>
+              </div>
+            </div>
+            <div class="score">94 %</div>
           </div>
         </div>
       </div>
-      <div class="split-grid">
+
+      <div class="right-col">
+
         <div class="card">
-          <div class="card-header">
-            <h3 id="skills-box-title">⭐ Vos Compétences Cibles</h3>
-            <p>Matières associées à votre compte pour le mentorat :</p>
-          </div>
-          <div class="card-body">
-            <div id="user-skills-list" class="badge-wrap">
+          <h2>Activité récente</h2>
+          <div class="activity-list" id="activity-log-container">
+            <div class="activity-item">
+              <div class="act-icon icon-blue">💬</div>
+              <div>
+                <p>Maxime Hounwanou vous a envoyé un message</p>
+                <span class="time">Il y a 12 min</span>
               </div>
+            </div>
           </div>
         </div>
+
         <div class="card">
-          <div class="card-header">
-            <h3>ℹ️ Informations d'Inscription</h3>
-          </div>
-          <div class="card-body">
-            <ul class="info-list">
-              <li><span>Email</span><span id="info-email">--</span></li>
-              <li><span>Contact</span><span id="info-phone">--</span></li>
-              <li><span>Année d'étude</span><span id="info-annee">--</span></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="pane-messages" class="pane">
-      <div class="msg-layout">
-        <div class="conv-list">
-          <div class="conv-search">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" placeholder="Rechercher un message..." />
-          </div>
-          <div>
-            <div class="conv-row active">
-              <div class="conv-avatar blue">AT</div>
-              <div class="conv-meta">
-                <div class="conv-meta-top"><strong>Dr. Alan Turing</strong><span>En ligne</span></div>
-                <p>Bonjour ! Prêt pour notre séance ?</p>
+          <h2>Séances de la semaine</h2>
+          <div class="sessions-list" id="weekly-sessions-container">
+            <div class="session">
+              <div class="session-bar teal"></div>
+              <div class="session-info">
+                <div class="session-subject">Apprentissage Auto.</div>
+                <div class="session-with">avec Chloé B.</div>
               </div>
-            </div>
-            <div class="conv-row">
-              <div class="conv-avatar gray">GH</div>
-              <div class="conv-meta">
-                <div class="conv-meta-top"><strong>Grace Hopper</strong><span style="color:var(--muted)">2h</span></div>
-                <p>N'oublie pas de réviser les commandes Linux.</p>
+              <div class="session-time">
+                <div class="session-hour">15:00</div>
+                <div class="session-day">Jeu 6 Juin</div>
               </div>
             </div>
           </div>
         </div>
-        <div class="chat-window">
-          <div class="chat-topbar">
-            <div class="conv-avatar blue" style="width:40px;height:40px;font-size:13px;">AT</div>
-            <div>
-              <strong>Dr. Alan Turing (Mentor)</strong>
-              <span class="online">● En ligne</span>
-            </div>
-          </div>
-          <div class="chat-feed">
-            <div class="sys-notice">Votre espace de discussion sécurisé avec votre mentor est prêt.</div>
-            <div class="bubble-row">
-              <div class="conv-avatar blue" style="width:30px;height:30px;font-size:11px;flex-shrink:0;margin-top:2px;">AT</div>
-              <div class="bubble incoming">Bonjour ! J'ai analysé tes matières cibles sélectionnées lors de ton inscription. On commence quand tu veux.</div>
-            </div>
-          </div>
-          <div class="chat-input">
-            <input type="text" placeholder="Écrivez votre message ici..." id="chat-msg-input" />
-            <button class="btn-send" onclick="sendMessage()">
-              <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            </button>
-          </div>
-        </div>
+
       </div>
     </div>
-
-    <div id="pane-directory" class="pane">
-      <div class="pane-title">
-        <h2>Annuaire des Mentors Volontaires</h2>
-        <p>Trouvez et contactez les mentors de l'IFRI disponibles selon vos matières cibles.</p>
-      </div>
-      <div class="dir-grid">
-        <div class="mentor-card">
-          <div class="mentor-avatar">AT</div>
-          <div class="mentor-name">Alan Turing</div>
-          <div class="mentor-filiere">Génie Logiciel (GL)</div>
-          <div class="mentor-skills">
-            <span class="skill-tag">Algorithmique</span>
-            <span class="skill-tag">Langage C</span>
-            <span class="skill-tag">Bases de Données</span>
-          </div>
-          <div class="mentor-footer">
-            <span>Ancien de l'IFRI</span>
-            <button class="btn-contact">Contacter <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
-          </div>
-        </div>
-        <div class="mentor-card">
-          <div class="mentor-avatar">GH</div>
-          <div class="mentor-name">Grace Hopper</div>
-          <div class="mentor-filiere">Systèmes &amp; Réseaux (SRI)</div>
-          <div class="mentor-skills">
-            <span class="skill-tag">Architecture Réseaux</span>
-            <span class="skill-tag">Linux</span>
-            <span class="skill-tag">Sécurité</span>
-          </div>
-          <div class="mentor-footer">
-            <span>Enseignant Associé</span>
-            <button class="btn-contact">Contacter <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="pane-schedule" class="pane">
-      <div class="pane-title">
-        <h2>Vos Créneaux de Disponibilité</h2>
-        <p>Aperçu en temps réel des moments cochés lors de votre inscription.</p>
-      </div>
-      
-      <div class="card" style="padding: 20px; background: white; border-radius: 12px; overflow-x: auto;">
-        <table style="width: 100%; border-collapse: collapse; text-align: left; min-width: 500px;">
-          <thead>
-            <tr style="border-bottom: 2px solid #edf2f7;">
-              <th style="padding: 12px; color: #64748b; font-weight: 600;">Jour</th>
-              <th style="padding: 12px; color: #64748b; font-weight: 600;">08h - 10h</th>
-              <th style="padding: 12px; color: #64748b; font-weight: 600;">10h - 12h</th>
-              <th style="padding: 12px; color: #64748b; font-weight: 600;">14h - 16h</th>
-              <th style="padding: 12px; color: #64748b; font-weight: 600;">16h - 18h</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="border-bottom: 1px solid #edf2f7;">
-              <td style="padding: 16px; font-weight: 600; color: #1e293b;">Lundi</td>
-              <td style="padding: 16px;"><span id="slot-lundi-08h-10h" class="schedule-slot-badge">08h-10h</span></td>
-              <td style="padding: 16px;"><span id="slot-lundi-10h-12h" class="schedule-slot-badge">10h-12h</span></td>
-              <td style="padding: 16px;"><span id="slot-lundi-14h-16h" class="schedule-slot-badge">14h-16h</span></td>
-              <td style="padding: 16px;"><span id="slot-lundi-16h-18h" class="schedule-slot-badge">16h-18h</span></td>
-            </tr>
-            <tr style="border-bottom: 1px solid #edf2f7;">
-              <td style="padding: 16px; font-weight: 600; color: #1e293b;">Mardi</td>
-              <td style="padding: 16px;"><span id="slot-mardi-08h-10h" class="schedule-slot-badge">08h-10h</span></td>
-              <td style="padding: 16px;"><span id="slot-mardi-10h-12h" class="schedule-slot-badge">10h-12h</span></td>
-              <td style="padding: 16px;"><span id="slot-mardi-14h-16h" class="schedule-slot-badge">14h-16h</span></td>
-              <td style="padding: 16px;"><span id="slot-mardi-16h-18h" class="schedule-slot-badge">16h-18h</span></td>
-            </tr>
-            <tr style="border-bottom: 1px solid #edf2f7;">
-              <td style="padding: 16px; font-weight: 600; color: #1e293b;">Mercredi</td>
-              <td style="padding: 16px;"><span id="slot-mercredi-08h-10h" class="schedule-slot-badge">08h-10h</span></td>
-              <td style="padding: 16px;"><span id="slot-mercredi-10h-12h" class="schedule-slot-badge">10h-12h</span></td>
-              <td style="padding: 16px;"><span id="slot-mercredi-14h-16h" class="schedule-slot-badge">14h-16h</span></td>
-              <td style="padding: 16px;"><span id="slot-mercredi-16h-18h" class="schedule-slot-badge">16h-18h</span></td>
-            </tr>
-            <tr style="border-bottom: 1px solid #edf2f7;">
-              <td style="padding: 16px; font-weight: 600; color: #1e293b;">Jeudi</td>
-              <td style="padding: 16px;"><span id="slot-jeudi-08h-10h" class="schedule-slot-badge">08h-10h</span></td>
-              <td style="padding: 16px;"><span id="slot-jeudi-10h-12h" class="schedule-slot-badge">10h-12h</span></td>
-              <td style="padding: 16px;"><span id="slot-jeudi-14h-16h" class="schedule-slot-badge">14h-16h</span></td>
-              <td style="padding: 16px;"><span id="slot-jeudi-16h-18h" class="schedule-slot-badge">16h-18h</span></td>
-            </tr>
-            <tr style="border-bottom: 1px solid #edf2f7;">
-              <td style="padding: 16px; font-weight: 600; color: #1e293b;">Vendredi</td>
-              <td style="padding: 16px;"><span id="slot-vendredi-08h-10h" class="schedule-slot-badge">08h-10h</span></td>
-              <td style="padding: 16px;"><span id="slot-vendredi-10h-12h" class="schedule-slot-badge">10h-12h</span></td>
-              <td style="padding: 16px;"><span id="slot-vendredi-14h-16h" class="schedule-slot-badge">14h-16h</span></td>
-              <td style="padding: 16px;"><span id="slot-vendredi-16h-18h" class="schedule-slot-badge">16h-18h</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div id="pane-profile" class="pane">
-      <div class="pane-title">
-        <h2>Mon Profil</h2>
-        <p>Données d'authentification officielles IFRI.</p>
-      </div>
-      <div class="profile-layout">
-        <div class="profile-left">
-          <div id="profile-avatar" class="profile-big-avatar">--</div>
-          <div id="profile-fullname" class="profile-name">-- --</div>
-          <div id="profile-display-email" class="profile-email">--</div>
-          <div class="verified-badge">
-            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Profil IFRI Vérifié
-          </div>
-        </div>
-        <div class="profile-right">
-          <h3>Informations de Compte</h3>
-          <p class="sub">Données d'authentification de la base locale</p>
-          <div class="form-grid">
-            <div class="form-group">
-              <label>Prénom</label>
-              <input type="text" class="fake-input" id="edit-profile-firstname" readonly style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 6px; width: 100%; color: #334155; font-weight: 500;">
-            </div>
-            <div class="form-group">
-              <label>Nom</label>
-              <input type="text" class="fake-input" id="edit-profile-lastname" readonly style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 6px; width: 100%; color: #334155; font-weight: 500;">
-            </div>
-            <div class="form-group">
-              <label>Email Institutionnel</label>
-              <input type="text" class="fake-input" id="edit-profile-email" readonly style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 6px; width: 100%; color: #334155; font-weight: 500;">
-            </div>
-            <div class="form-group">
-              <label>Numéro de Téléphone</label>
-              <input type="text" class="fake-input" id="edit-profile-phone" readonly style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 6px; width: 100%; color: #334155; font-weight: 500;">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</div>
+  </main>
 
 </body>
 </html>
