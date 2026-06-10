@@ -1,7 +1,4 @@
-/**
- * IFRI MentorLink - Module de gestion du Tableau de bord (Frontend)
- * Prêt pour l'intégration de l'API Backend.
- */
+
 
 document.addEventListener("DOMContentLoaded", () => {
     
@@ -15,10 +12,10 @@ document.addEventListener("DOMContentLoaded", () => {
     initFormulaires();
 });
 
-/**
- * 1. SYSTÈME DE NAVIGATION (Routing Client - SPA)
- * Gère l'affichage des panneaux sans recharger la page.
- */
+
+  //1. SYSTÈME DE NAVIGATION (Routing Client - SPA)
+  //Gère l'affichage des panneaux sans recharger la page.
+
 function initNavigation() {
     const navItems = document.querySelectorAll(".nav-links .nav-item");
     const panes = document.querySelectorAll(".pane");
@@ -50,9 +47,9 @@ function initNavigation() {
     });
 }
 
-/**
- * 2. GESTION DU PROFIL DE L'UTILISATEUR CONNECTÉ
- */
+
+ // 2. GESTION DU PROFIL DE L'UTILISATEUR CONNECTÉ
+
 function chargerDonneesUtilisateur() {
     const savedUser = localStorage.getItem("ml_logged_user");
     
@@ -112,16 +109,16 @@ function chargerDonneesUtilisateur() {
     }
 }
 
-/**
- * 3. STATISTIQUES DU TABLEAU DE BORD
- */
+
+ //3. STATISTIQUES DU TABLEAU DE BORD
+ 
 function chargerStatistiques() {
     // TODO @Backend: Effectuer le fetch pour récupérer les compteurs réels de la BDD
 }
 
-/**
- * 4. ENTRAIDE : RECHERCHE, SUGGESTIONS ET PROFILS (ANNUAIRE)
- */
+
+ //4. ENTRAIDE : RECHERCHE, SUGGESTIONS ET PROFILS (ANNUAIRE)
+ 
 async function chargerSuggestionsEtProfils() {
     const suggestionsContainer = document.getElementById("dash-suggestions-container");
     const directoryContainer = document.getElementById("directory-profiles-container");
@@ -165,9 +162,9 @@ async function chargerSuggestionsEtProfils() {
     }
 }
 
-/**
- * 5. SYSTÈME DE MESSAGERIE EN TEMPS RÉEL
- */
+
+ //5. SYSTÈME DE MESSAGERIE EN TEMPS RÉEL
+
 async function chargerMessagerie() {
     const threadsContainer = document.getElementById("chat-threads-container");
     const messagesContainer = document.getElementById("chat-messages-container");
@@ -212,19 +209,18 @@ async function chargerMessagerie() {
     }
 }
 
-/**
- * 6. FLUX DES OFFRES ET DEMANDES D'ACCOMPAGNEMENT
- */
+
+ //6. FLUX DES OFFRES ET DEMANDES D'ACCOMPAGNEMENT
+ 
 function chargerOffresEtDemandes() {
     const feedContainer = document.getElementById("offers-feed-container");
     if (feedContainer) feedContainer.innerHTML = "";
 
-    // TODO @Backend: Récupérer les posts de la BDD et exécuter un appendChild()
+    
 }
 
-/**
- * 7. INTERACTION AVEC LES FORMULAIRES (ENVOI VERS LA BDD)
- */
+// 7. INTERACTION AVEC LES FORMULAIRES (ENVOI VERS LA BDD)
+
 function initFormulaires() {
     const editProfileForm = document.getElementById("profile-edit-form");
     if (editProfileForm) {

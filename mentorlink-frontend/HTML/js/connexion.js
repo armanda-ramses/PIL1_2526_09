@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Bouton Google (pas encore implémenté)
+    // Bouton Google (non fonctionnel)
     const btnGoogle = document.querySelector(".btn-google");
     if (btnGoogle) {
         btnGoogle.addEventListener("click", () => {
