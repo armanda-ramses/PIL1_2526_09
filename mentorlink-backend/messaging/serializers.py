@@ -17,8 +17,8 @@ class ConversationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Conversations
-        fields = ['id_conversation', 'utilisateur1', 'utilisateur2', 'utilisateur1_id', 'utilisateur2_id', 'date_creation']
-        read_only_fields = ['id_conversation', 'date_creation']
+        fields = ['id', 'utilisateur1', 'utilisateur2', 'utilisateur1_id', 'utilisateur2_id', 'date_creation']
+        read_only_fields = ['id', 'date_creation']
 
     def create(self, validated_data):
         u1_id = validated_data.pop('utilisateur1_id')
@@ -36,15 +36,15 @@ class MessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Messages
-        fields = ['id_message', 'conversation', 'conversation_id', 'expediteur', 'expediteur_id', 'contenu_message', 'date_envoi']
-        read_only_fields = ['id_message', 'conversation', 'expediteur', 'date_envoi']
+        fields = ['id', 'conversation', 'conversation_id', 'expediteur', 'expediteur_id', 'contenu_message', 'date_envoi']
+        read_only_fields = ['id', 'conversation', 'expediteur', 'date_envoi']
 
     def create(self, validated_data):
         conv_id = validated_data.pop('conversation_id')
         expediteur_id = validated_data.pop('expediteur_id')
         contenu = validated_data.get('contenu_message')
         from mentorat.models import Conversations, Utilisateur
-        conv = Conversations.objects.get(id_conversation=conv_id)
+        conv = Conversations.objects.get(id=conv_id)
         expediteur = Utilisateur.objects.get(id=expediteur_id)
         msg = Messages.objects.create(conversation=conv, expediteur=expediteur, contenu_message=contenu)
         return msg

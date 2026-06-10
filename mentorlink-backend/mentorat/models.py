@@ -158,9 +158,8 @@ class Matchings(models.Model):
 
 # 7. TABLE : conversations
 class Conversations(models.Model):
-    id_conversation = models.AutoField(primary_key=True)
-    utilisateur1 = models.ForeignKey(Utilisateur, on_delete=models.CASCADE, db_column='utilisateur1', related_name='conv_user1')
-    utilisateur2 = models.ForeignKey(Utilisateur, on_delete=models.CASCADE, db_column='utilisateur2', related_name='conv_user2')
+    utilisateur1 = models.ForeignKey(Utilisateur, on_delete=models.CASCADE, related_name='conv_user1')
+    utilisateur2 = models.ForeignKey(Utilisateur, on_delete=models.CASCADE, related_name='conv_user2')
     date_creation = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -170,9 +169,8 @@ class Conversations(models.Model):
 
 # 8. TABLE : messages
 class Messages(models.Model):
-    id_message = models.AutoField(primary_key=True)
-    conversation = models.ForeignKey(Conversations, on_delete=models.CASCADE, db_column='id_conversation')
-    expediteur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE, db_column='id_expediteur')
+    conversation = models.ForeignKey(Conversations, on_delete=models.CASCADE)
+    expediteur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
     contenu_message = models.TextField()
     date_envoi = models.DateTimeField(auto_now_add=True)
 

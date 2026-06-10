@@ -30,5 +30,5 @@ class MessageViewSet(viewsets.ModelViewSet):
         qs = super().get_queryset()
         conv_id = self.request.query_params.get('conversation_id')
         if conv_id:
-            qs = qs.filter(conversation__id_conversation=conv_id)
+            qs = qs.filter(conversation__id=conv_id)
         return qs
