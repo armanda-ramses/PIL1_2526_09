@@ -36,7 +36,7 @@ async function chargerMatieres() {
 
     try {
         const response = await fetch(
-            `http://127.0.0.1:8000/api/auth/matieres/?filiere=${filiere}&niveau=${niveau}`
+            `${API_BASE_URL}/auth/matieres/?filiere=${filiere}&niveau=${niveau}`
         );
         const data = await response.json();
         toutesLesMatieres = data;
@@ -183,7 +183,7 @@ async function soumettreInscription(disponibilitesBrutes) {
     };
 
     try {
-        const response = await fetch("http://127.0.0.1:8000/api/auth/inscription/", {
+        const response = await fetch(`${API_BASE_URL}/auth/inscription/`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)

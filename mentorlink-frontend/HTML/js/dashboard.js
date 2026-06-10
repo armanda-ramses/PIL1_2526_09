@@ -137,7 +137,7 @@ async function chargerSuggestionsEtProfils() {
     const user = JSON.parse(savedUser);
 
     try {
-        const response = await fetch(`http://127.0.0.1:8000/api/matching/?user_id=${user.id}`);
+        const response = await fetch(`${API_BASE_URL}/matching/?user_id=${user.id}`);
         const matches = await response.json();
 
         if (response.ok && matches.length > 0) {
@@ -184,7 +184,7 @@ async function chargerMessagerie() {
     const user = JSON.parse(savedUser);
 
     try {
-        const response = await fetch(`http://127.0.0.1:8000/api/messaging/conversations/?user_id=${user.id}`);
+        const response = await fetch(`${API_BASE_URL}/messaging/conversations/?user_id=${user.id}`);
         const conversations = await response.json();
 
         if (response.ok && conversations.length > 0) {
@@ -230,7 +230,7 @@ async function ouvrirConversation(targetId, targetName) {
 
     try {
         // Vérifier si une conversation existe
-        const response = await fetch(`http://127.0.0.1:8000/api/messaging/conversations/?user_id=${user.id}`);
+        const response = await fetch(`${API_BASE_URL}/messaging/conversations/?user_id=${user.id}`);
         const conversations = await response.json();
         
         let existingConv = null;
@@ -245,7 +245,7 @@ async function ouvrirConversation(targetId, targetName) {
             chargerMessages(existingConv.id, targetName);
         } else {
             // Créer une nouvelle conversation
-            const createRes = await fetch("http://127.0.0.1:8000/api/messaging/conversations/", {
+            const createRes = await fetch(`${API_BASE_URL}/messaging/conversations/`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -283,7 +283,7 @@ async function chargerMessages(conversationId, targetName) {
     const user = JSON.parse(savedUser);
 
     try {
-        const response = await fetch(`http://127.0.0.1:8000/api/messaging/messages/?conversation_id=${conversationId}`);
+        const response = await fetch(`${API_BASE_URL}/messaging/messages/?conversation_id=${conversationId}`);
         const messages = await response.json();
         
         if (response.ok) {
@@ -331,7 +331,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const user = JSON.parse(savedUser);
             
             try {
-                const res = await fetch("http://127.0.0.1:8000/api/messaging/messages/", {
+                const res = await fetch(`${API_BASE_URL}/messaging/messages/`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
@@ -361,7 +361,7 @@ async function chargerOffresEtDemandes() {
     feedContainer.innerHTML = "Chargement des annonces...";
 
     try {
-        const response = await fetch("http://127.0.0.1:8000/api/auth/propositions/");
+        const response = await fetch(`${API_BASE_URL}/auth/propositions/`);
         const propositions = await response.json();
 
         if (response.ok && propositions.length > 0) {
@@ -425,7 +425,7 @@ function initFormulaires() {
         let user = null;
         if (savedUser) {
             user = JSON.parse(savedUser);
-            fetch(`http://127.0.0.1:8000/api/auth/matieres/?filiere=${user.filiere}&niveau=${user.niveau_etudes}`)
+            fetch(`${API_BASE_URL}/auth/matieres/?filiere=${user.filiere}&niveau=${user.niveau_etudes}`)
             .then(res => res.json())
             .then(matieres => {
                 matiereSelect.innerHTML = "";
@@ -457,7 +457,7 @@ function initFormulaires() {
             };
 
             try {
-                const response = await fetch("http://127.0.0.1:8000/api/auth/propositions/", {
+                const response = await fetch(`${API_BASE_URL}/auth/propositions/`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"

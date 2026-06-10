@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.textContent = "Envoi en cours...";
 
             try {
-                const response = await fetch("http://127.0.0.1:8000/api/auth/mot-de-passe-oublie/", {
+                const response = await fetch(`${API_BASE_URL}/auth/mot-de-passe-oublie/`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ identifiant: identifiant })
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.textContent = "Vérification...";
 
             try {
-                const response = await fetch("http://127.0.0.1:8000/api/auth/verifier-code/", {
+                const response = await fetch(`${API_BASE_URL}/auth/verifier-code/`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.textContent = "Modification en cours...";
 
             try {
-                const response = await fetch("http://127.0.0.1:8000/api/auth/nouveau-mot-de-passe/", {
+                const response = await fetch(`${API_BASE_URL}/auth/nouveau-mot-de-passe/`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
