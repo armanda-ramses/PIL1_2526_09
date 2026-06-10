@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'mentorat', # ici, j'ai ajouté ma premiere app personnelle
+    'matching',
+    'messaging',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

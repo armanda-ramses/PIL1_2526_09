@@ -122,27 +122,94 @@ function chargerStatistiques() {
 /**
  * 4. ENTRAIDE : RECHERCHE, SUGGESTIONS ET PROFILS (ANNUAIRE)
  */
-function chargerSuggestionsEtProfils() {
+async function chargerSuggestionsEtProfils() {
     const suggestionsContainer = document.getElementById("dash-suggestions-container");
     const directoryContainer = document.getElementById("directory-profiles-container");
 
-    if (suggestionsContainer) suggestionsContainer.innerHTML = "";
-    if (directoryContainer) directoryContainer.innerHTML = "";
+    if (suggestionsContainer) suggestionsContainer.innerHTML = "Chargement des suggestions...";
+    if (directoryContainer) directoryContainer.innerHTML = "Chargement des profils...";
 
-    // TODO @Backend: Boucler sur la liste renvoyée par le serveur pour injecter le HTML
+    const savedUser = localStorage.getItem("ml_logged_user");
+    if (!savedUser) return;
+    const user = JSON.parse(savedUser);
+
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/api/matching/?user_id=${user.id}`);
+        const matches = await response.json();
+
+        if (response.ok && matches.length > 0) {
+            let html = "";
+            matches.forEach(match => {
+                html += `
+                <div class="profile-card" style="margin-bottom: 15px; border: 1px solid #eee; padding: 10px; border-radius: 8px;">
+                    <h4>${match.prenom} ${match.nom} (${match.score_compatibilite}% de compatibilité)</h4>
+                    <p><strong>Niveau:</strong> ${match.niveau_etudes} - ${match.filiere}</p>
+                    <p><strong>Matière:</strong> ${match.matiere}</p>
+                    <p><strong>Format:</strong> ${match.format_session}</p>
+                    <p><strong>Dispos communes:</strong> ${match.disponibilites_communes.join(", ")}</p>
+                    <button class="btn-primary" style="padding: 5px 10px; font-size: 12px; margin-top: 10px;">Proposer mentorat</button>
+                </div>
+                `;
+            });
+            if (suggestionsContainer) suggestionsContainer.innerHTML = html;
+            if (directoryContainer) directoryContainer.innerHTML = html; // Pour l'instant on met les mêmes dans l'annuaire
+        } else {
+            const msg = "<p>Aucune suggestion trouvée pour le moment. Modifiez vos matières ou disponibilités pour trouver plus de correspondances.</p>";
+            if (suggestionsContainer) suggestionsContainer.innerHTML = msg;
+            if (directoryContainer) directoryContainer.innerHTML = msg;
+        }
+    } catch (error) {
+        console.error("Erreur lors du chargement des suggestions:", error);
+        if (suggestionsContainer) suggestionsContainer.innerHTML = "<p>Erreur de connexion au serveur.</p>";
+        if (directoryContainer) directoryContainer.innerHTML = "<p>Erreur de connexion au serveur.</p>";
+    }
 }
 
 /**
  * 5. SYSTÈME DE MESSAGERIE EN TEMPS RÉEL
  */
-function chargerMessagerie() {
+async function chargerMessagerie() {
     const threadsContainer = document.getElementById("chat-threads-container");
     const messagesContainer = document.getElementById("chat-messages-container");
 
-    if (threadsContainer) threadsContainer.innerHTML = "";
-    if (messagesContainer) messagesContainer.innerHTML = "";
+    if (threadsContainer) threadsContainer.innerHTML = "Chargement...";
+    if (messagesContainer) messagesContainer.innerHTML = "Sélectionnez une conversation";
 
-    // TODO @Backend: Requête pour charger la liste des conversations ouvertes à gauche
+    const savedUser = localStorage.getItem("ml_logged_user");
+    if (!savedUser) return;
+    const user = JSON.parse(savedUser);
+
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/api/messaging/conversations/?user_id=${user.id}`);
+        const conversations = await response.json();
+
+        if (response.ok && conversations.length > 0) {
+            let html = "";
+            conversations.forEach(conv => {
+                // Trouver l'autre participant (celui qui n'est pas moi)
+                let otherParticipant = "Utilisateur inconnu";
+                if (conv.utilisateur1_details && conv.utilisateur1_details.id !== user.id) {
+                    otherParticipant = `${conv.utilisateur1_details.prenom} ${conv.utilisateur1_details.nom}`;
+                } else if (conv.utilisateur2_details && conv.utilisateur2_details.id !== user.id) {
+                    otherParticipant = `${conv.utilisateur2_details.prenom} ${conv.utilisateur2_details.nom}`;
+                }
+
+                const date = new Date(conv.date_creation).toLocaleDateString();
+                html += `
+                <div class="chat-thread" style="padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
+                    <strong>${otherParticipant}</strong><br>
+                    <small>Créée le ${date}</small>
+                </div>
+                `;
+            });
+            if (threadsContainer) threadsContainer.innerHTML = html;
+        } else {
+            if (threadsContainer) threadsContainer.innerHTML = "<p>Aucune conversation en cours.</p>";
+        }
+    } catch (error) {
+        console.error("Erreur de messagerie:", error);
+        if (threadsContainer) threadsContainer.innerHTML = "<p>Erreur serveur.</p>";
+    }
 }
 
 /**
