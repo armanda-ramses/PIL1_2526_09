@@ -4,25 +4,22 @@ document.addEventListener("DOMContentLoaded", () => {
         form.addEventListener("submit", (e) => {
             e.preventDefault();
 
-            // 1. Récupérer les valeurs selon les vrais id du HTML
+                        // 1. Récupérer les valeurs
             const nom = document.getElementById("lastname")?.value.trim() || "";
             const prenom = document.getElementById("firstname")?.value.trim() || "";
-            const contact = document.getElementById("contact")?.value.trim() || "";
+            const email = document.getElementById("email")?.value.trim() || "";
+            const telephone = document.getElementById("telephone")?.value.trim() || "";
             const password = document.getElementById("reg-password")?.value || "";
             const password_confirm = document.getElementById("confirm-password")?.value || "";
 
-            // 2. Déterminer si contact est email ou téléphone
-            const email = contact.includes("@") ? contact : "";
-            const telephone = !contact.includes("@") ? contact : "";
-
-            // 3. Validations
+            // 2. Validations
             if (!nom || !prenom) {
                 alert("Veuillez remplir votre nom et prénom.");
                 return;
             }
 
-            if (!contact) {
-                alert("Veuillez fournir un email ou un numéro de téléphone.");
+            if (!email || !telephone) {
+                alert("Veuillez fournir votre email ET votre numéro de téléphone.");
                 return;
             }
 

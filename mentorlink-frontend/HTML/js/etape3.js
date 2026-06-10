@@ -154,7 +154,7 @@ async function soumettreInscription(disponibilitesBrutes) {
     const prenom = localStorage.getItem("ml_prenom") || "";
     const email = localStorage.getItem("ml_email") || "";
     const telephone = localStorage.getItem("ml_telephone") || "";
-    const password = localStorage.getItem("ml_mot_de_passe") || "";
+    const password = localStorage.getItem("ml_password") || "";
 
     const filiereHTML = document.getElementById('filiere')?.value || "";
     const niveauHTML = document.getElementById('study-level')?.value || "";
