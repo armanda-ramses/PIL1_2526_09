@@ -400,3 +400,36 @@ a {
     text-align: center;
   }
 }
+
+
+
+.logo-icon img {
+  width: 100%;  /* Le logo prendra la largeur de son conteneur */
+  height: auto; /* Garde les proportions de l'image */
+  display: block;
+}
+
+/* Optionnel : Ajuste la taille du conteneur si nécessaire */
+.logo-icon {
+  width: 40px;  /* Ajuste selon tes besoins */
+  height: 40px;
+}
+
+
+
+
+
+.footer-logo img {
+  height: 40px;  /* Ajuste la hauteur de ton logo ici */
+  width: auto;   /* Garde les proportions de l'image */
+  display: block;
+}
+
+/* Optionnel : si tu veux aligner le logo et le texte verticalement */
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centre le logo et le texte */
+  gap: 15px;           /* Espace entre le logo et le texte */
+  text-align: center;
+}
