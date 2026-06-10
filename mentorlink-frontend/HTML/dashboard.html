@@ -3,124 +3,252 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard — IFRI MentorLink</title>
+  <title>IFRI MentorLink — Plateforme Interne</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/dashboard.css" />
 </head>
 <body>
 
   <header class="topbar">
-    <div class="logo">
+    <div class="logo" data-pane-trigger="home" style="cursor: pointer;">
       <div class="logo-icon">
-        <img src="IFRI.png" alt="Logo Mon Entreprise">
+        <img src="IFRI.png" alt="Logo IFRI">
       </div>
       <div>
         <div class="logo-title">IFRI</div>
         <div class="logo-sub">MentorLink</div>
       </div>
     </div>
+
+    <nav class="nav-links">
+      <button class="nav-item active" data-pane="home">💡 Tableau de bord</button>
+      <button class="nav-item" data-pane="directory">👥 Mise en relation</button>
+      <button class="nav-item" data-pane="messages">💬 Messages</button>
+      <button class="nav-item" data-pane="profile-pane">👤 Profil</button>
+      <button class="nav-item" data-pane="offers">🤝 Offres et demandes</button>
+    </nav>
+
+    <div class="topbar-user">
+      <div class="notification-trigger" data-pane-trigger="messages">
+        <span class="chat-icon-top">💬</span>
+        <span class="notification-badge-dot"></span>
+      </div>
+      <div class="avatar-circle" id="topbar-avatar">--</div>
+      <button class="btn-logout" id="btn-logout">Déconnexion</button>
+    </div>
   </header>
 
-  <main class="main">
+  <main class="main-content">
 
-    <div class="page-header">
-      <div>
-        <h1>Bonjour, <span id="user-firstname">Aminata</span> 👋</h1>
-        <p>Voici ce qui se passe dans votre réseau aujourd'hui.</p>
-      </div>
-      <a href="mentors.html" class="btn-primary">Trouver des mentors →</a>
-    </div>
-
-    <div class="stats-grid" id="stats-container">
-      <div class="stat-card">
-        <div class="stat-icon icon-blue">👥</div>
-        <div class="stat-value" id="stat-connections">0</div>
-        <div class="stat-label">Connexions actives</div>
-        <div class="stat-sub blue" id="stat-connections-sub">--</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon icon-green">📖</div>
-        <div class="stat-value" id="stat-sessions-count">0</div>
-        <div class="stat-label">Séances complétées</div>
-        <div class="stat-sub green" id="stat-sessions-sub">--</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon icon-purple">💬</div>
-        <div class="stat-value" id="stat-messages">0</div>
-        <div class="stat-label">Messages envoyés</div>
-        <div class="stat-sub purple" id="stat-messages-sub">--</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon icon-orange">📈</div>
-        <div class="stat-value" id="stat-compatibility">0 %</div>
-        <div class="stat-label">Score de compatibilité</div>
-        <div class="stat-sub orange" id="stat-compatibility-sub">--</div>
-      </div>
-    </div>
-
-    <div class="bottom-grid">
-
-      <div class="card">
-        <div class="card-header">
-          <h2>Meilleures suggestions de mise en relation</h2>
-          <a href="mentors.html" class="link-voir">Voir tout →</a>
+    <section class="pane active" id="pane-home">
+      <div class="page-header">
+        <div>
+          <h1>Bonjour, <span class="user-firstname-display">...</span> 👋</h1>
+          <p>Voici ce qui se passe dans votre réseau aujourd'hui.</p>
         </div>
+        <button class="btn-primary" data-pane-trigger="directory">Trouver des mentors →</button>
+      </div>
 
-        <div id="suggestions-list-container">
-          <div class="suggestion" data-score="94">
-            <div class="avatar purple">MH</div>
-            <div class="suggestion-info">
-              <div class="suggestion-top">
-                <span class="name">Maxime Hounwanou</span>
-                <span class="badge badge-mentor">Mentor</span>
-              </div>
-              <div class="level">M2 · Génie Logiciel (GL)</div>
-              <div class="tags">
-                <span class="tag">Algorithmique</span>
-                <span class="tag">Architecture Logicielle</span>
-              </div>
-            </div>
-            <div class="score">94 %</div>
-          </div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon icon-blue">👥</div>
+          <div class="stat-value" id="dash-stat-connections">0</div>
+          <div class="stat-label">Connexions actives</div>
+          <div class="stat-sub blue" id="dash-stat-connections-sub">--</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon icon-green">📖</div>
+          <div class="stat-value" id="dash-stat-sessions">0</div>
+          <div class="stat-label">Séances complétées</div>
+          <div class="stat-sub green" id="dash-stat-sessions-sub">--</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon icon-purple">💬</div>
+          <div class="stat-value" id="dash-stat-messages">0</div>
+          <div class="stat-label">Messages échangés</div>
+          <div class="stat-sub purple" id="dash-stat-messages-sub">--</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon icon-orange">📈</div>
+          <div class="stat-value" id="dash-stat-compatibility">0 %</div>
+          <div class="stat-label">Score moyen de compatibilité</div>
+          <div class="stat-sub orange" id="dash-stat-compatibility-sub">--</div>
         </div>
       </div>
 
-      <div class="right-col">
-
+      <div class="bottom-grid">
         <div class="card">
-          <h2>Activité récente</h2>
-          <div class="activity-list" id="activity-log-container">
-            <div class="activity-item">
-              <div class="act-icon icon-blue">💬</div>
-              <div>
-                <p>Maxime Hounwanou vous a envoyé un message</p>
-                <span class="time">Il y a 12 min</span>
-              </div>
-            </div>
+          <div class="card-header">
+            <h2>Meilleures suggestions de mise en relation</h2>
+            <button class="link-voir" data-pane-trigger="directory">Voir tout →</button>
           </div>
+          <div class="suggestion-list-mini" id="dash-suggestions-container"></div>
         </div>
 
-        <div class="card">
-          <h2>Séances de la semaine</h2>
-          <div class="sessions-list" id="weekly-sessions-container">
-            <div class="session">
-              <div class="session-bar teal"></div>
-              <div class="session-info">
-                <div class="session-subject">Apprentissage Auto.</div>
-                <div class="session-with">avec Chloé B.</div>
-              </div>
-              <div class="session-time">
-                <div class="session-hour">15:00</div>
-                <div class="session-day">Jeu 6 Juin</div>
-              </div>
-            </div>
+        <div class="right-col">
+          <div class="card">
+            <h2>Activité récente</h2>
+            <div id="dash-activity-container"></div>
           </div>
         </div>
-
       </div>
-    </div>
+    </section>
+
+    <section class="pane" id="pane-directory">
+      <div class="page-header">
+        <div>
+          <h1>Trouver votre binôme</h1>
+          <p><span id="directory-count">0</span> profil(s) correspondent à vos critères.</p>
+        </div>
+        <button class="btn-primary" data-pane-trigger="offers">+ Publier une offre / demande</button>
+      </div>
+
+      <div class="filter-wrapper card">
+        <div class="search-bar-row">
+          <input type="text" id="search-input" placeholder="Rechercher par nom, matière, filière..." class="input-field">
+          <select class="select-field" id="filter-filiere"><option value="">Filière (Toutes)</option><option value="IA">IA</option><option value="GL">GL</option><option value="SRI">SRI</option></select>
+          <select class="select-field" id="filter-niveau"><option value="">Niveau (Tous)</option><option value="L3">L3</option><option value="M1">M1</option><option value="M2">M2</option></select>
+        </div>
+        <div class="tab-filters">
+          <button class="tab-btn active" data-role="all">Tous</button>
+          <button class="tab-btn" data-role="mentor">Mentors</button>
+          <button class="tab-btn" data-role="mentore">Mentorés</button>
+        </div>
+      </div>
+
+      <div class="profiles-grid" id="directory-profiles-container"></div>
+    </section>
+
+    <section class="pane" id="pane-messages">
+      <div class="messaging-container card">
+        <div class="conversations-sidebar">
+          <div class="sidebar-search">
+            <input type="text" placeholder="Rechercher une discussion..." class="input-field">
+          </div>
+          <div class="conversations-list-wrapper" id="chat-threads-container"></div>
+        </div>
+
+        <div class="chat-window" id="chat-window-active" style="display: none;">
+          <div class="chat-header-active">
+            <div class="avatar purple" id="chat-header-avatar">--</div>
+            <div>
+              <h3 id="chat-header-name">Sélectionnez un contact</h3>
+              <span class="status-indicator" id="chat-header-status">...</span>
+            </div>
+          </div>
+          <div class="chat-body-messages" id="chat-messages-container"></div>
+          <form class="chat-footer-input" id="chat-send-form">
+            <input type="text" id="chat-input-message" placeholder="Écrire un message..." class="input-chat-field" required>
+            <button type="submit" class="btn-send-message"> Envoyer</button>
+          </form>
+        </div>
+        
+        <div class="chat-window-empty" id="chat-window-empty" style="display: flex; justify-content: center; align-items: center; color: #64748b; font-size: 14px;">
+           <p>Sélectionnez une conversation pour commencer à discuter.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="pane" id="pane-profile-pane">
+      <div class="profile-layout-grid">
+        <div class="card profile-left-card">
+          <div class="avatar-large" id="prof-avatar">--</div>
+          <h2 class="profile-username-title" id="prof-fullname">...</h2>
+          <span class="badge badge-mentore-large" id="prof-badge">...</span>
+          <p class="profile-mini-bio" id="prof-bio">Aucune biographie rédigée.</p>
+          <hr class="separator">
+          <div class="contact-details-list">
+            <p>📧 <span id="prof-email">...</span></p>
+            <p>📞 <span id="prof-phone">...</span></p>
+            <p>📍 <span id="prof-location">...</span></p>
+          </div>
+          <button class="btn-primary edit-profile-btn" data-pane-trigger="edit-profile">✏️ Modifier le profil</button>
+        </div>
+
+        <div class="profile-right-column">
+          <div class="card">
+            <h3>Compétences & Profil Académique</h3>
+            <div class="skills-block-section">
+              <h4>Points forts :</h4>
+              <div class="tags-container" id="prof-skills-strengths"></div>
+              <h4 style="margin-top: 16px;">À améliorer :</h4>
+              <div class="tags-container" id="prof-skills-weaknesses"></div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 20px;">
+            <h3>Séances récentes</h3>
+            <div class="sessions-list" id="prof-sessions-history"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pane" id="pane-edit-profile">
+      <div class="form-container-wrapper card">
+        <div class="form-header-back">
+          <button class="btn-back-arrow" data-pane-trigger="profile-pane">← Retour</button>
+          <h2>Modifier le profil</h2>
+        </div>
+        <form id="profile-edit-form" class="edit-profile-form">
+          <div class="form-row-grid">
+            <div class="form-group">
+              <label for="input-firstname">Prénom</label>
+              <input type="text" id="input-firstname" class="input-field" required>
+            </div>
+            <div class="form-group">
+              <label for="input-lastname">Nom</label>
+              <input type="text" id="input-lastname" class="input-field" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="input-email">Adresse e-mail interne</label>
+            <input type="email" id="input-email" class="input-field" required>
+          </div>
+          <div class="form-group">
+            <label for="input-bio">Courte Biographie</label>
+            <textarea id="input-bio" class="textarea-field" rows="3"></textarea>
+          </div>
+
+          <div class="form-actions-row">
+            <button type="button" class="btn-secondary" data-pane-trigger="profile-pane">Annuler</button>
+            <button type="submit" class="btn-save-submit">Enregistrer les modifications</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="pane" id="pane-offers">
+      <div class="page-header">
+        <div>
+          <h1>Offres & Demandes de Support</h1>
+          <p>Annonces d'entraide de la communauté universitaire.</p>
+        </div>
+      </div>
+
+      <div class="offers-layout-grid">
+        <div class="offers-feed-list" id="offers-feed-container"></div>
+
+        <div class="card creation-sidebar-form">
+          <h3>⚡ Nouvelle publication</h3>
+          <form id="offer-creation-form">
+            <div class="form-group" style="margin-top:12px;">
+              <label>Titre de l'annonce</label>
+              <input type="text" id="offer-title" placeholder="Ex: Aide en Algèbre linéaire" class="input-field" required>
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea id="offer-desc" placeholder="Décrivez votre besoin..." class="textarea-field" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn-save-submit" style="width:100%; margin-top: 10px;">🚀 Publier l'annonce</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
   </main>
 
+  <script src="js/dashboard.js"></script>
 </body>
 </html>
