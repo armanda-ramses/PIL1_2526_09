@@ -100,71 +100,64 @@
                     Détaillez votre parcours actuel pour charger vos cours officiels de l'IFRI.
                 </p>
 
-                <form id="academicForm">
-                    
-                    <div class="form-row-grid-3">
-                        <div class="form-group">
-                            <label for="study-level">Niveau d'études</label>
-                            <select class="form-control select-custom" id="study-level" required>
-                                <option value="" disabled selected>Niveau</option>
-                                <option value="L1">Licence 1</option>
-                                <option value="L2">Licence 2</option>
-                                <option value="L3">Licence 3</option>
-                            </select>
-                        </div>
+               <form id="academicForm">
+    
+    <div class="form-row-grid">
+        <div class="form-group">
+            <label for="study-level">Niveau d'études</label>
+            <select class="form-control select-custom" id="study-level" required>
+                <option value="" disabled selected>Niveau</option>
+                <option value="L1">Licence 1</option>
+                <option value="L2">Licence 2</option>
+                <option value="L3">Licence 3</option>
+            </select>
+        </div>
 
-                        <div class="form-group">
-                            <label for="filiere">Filière</label>
-                            <select class="form-control select-custom" id="filiere" required>
-                                <option value="" disabled selected>Filière</option>
-                                <option value="GL">Génie Logiciel (GL)</option>
-                                <option value="SI">Sécurité Informatique (SI)</option>
-                                <option value="IM">Internet et Multimédia (IM)</option>
-                                <option value="SIRI">Systèmes d'Info & Réseaux</option>
-                                <option value="IA">Intelligence Artificielle (IA)</option>
-                                <option value="IoT">Systèmes Embarqués & IoT</option>
-                            </select>
-                        </div>
+        <div class="form-group">
+            <label for="filiere">Filière</label>
+            <select class="form-control select-custom" id="filiere" required>
+                <option value="" disabled selected>Filière</option>
+                <option value="GL">Génie Logiciel (GL)</option>
+                <option value="SI">Sécurité Informatique (SI)</option>
+                <option value="IM">Internet et Multimédia (IM)</option>
+                <option value="SIRI">Systèmes d'Info & Réseaux</option>
+                <option value="IA">Intelligence Artificielle (IA)</option>
+                <option value="IoT">Systèmes Embarqués & IoT</option>
+            </select>
+        </div>
+    </div>
 
-                        <div class="form-group">
-                            <label for="semestre">Semestre</label>
-                            <select class="form-control select-custom" id="semestre" required disabled>
-                                <option value="" disabled selected>Sélectionnez</option>
-                            </select>
-                        </div>
-                    </div>
+    <div class="form-group" style="margin-top: 20px;">
+        
+        <div style="margin-bottom: 20px;">
+            <label class="box-title"> Vos Points Forts (Matières à partager)</label>
+            <select id="select-forts" class="select-matiere" disabled>
+                <option value="" disabled selected>Choisissez une matière à ajouter...</option>
+            </select>
+            <div class="box-selection" id="zone-forts">
+                <p class="placeholder-zone">Aucune matière sélectionnée comme point fort.</p>
+            </div>
+        </div>
 
-                    <div class="form-group" style="margin-top: 20px;">
-                        
-                        <div style="margin-bottom: 20px;">
-                            <label class="box-title"> Vos Points Forts (Matières à partager)</label>
-                            <select id="select-forts" class="select-matiere" disabled>
-                                <option value="" disabled selected>Choisissez une matière à ajouter...</option>
-                            </select>
-                            <div class="box-selection" id="zone-forts">
-                                <p class="placeholder-zone">Aucune matière sélectionnée comme point fort.</p>
-                            </div>
-                        </div>
+        <div style="margin-bottom: 20px;">
+            <label class="box-title"> Vos Points Faibles (Matières à améliorer)</label>
+            <select id="select-faibles" class="select-matiere" disabled>
+                <option value="" disabled selected>Choisissez une matière à ajouter...</option>
+            </select>
+            <div class="box-selection" id="zone-faibles">
+                <p class="placeholder-zone">Aucune matière sélectionnée comme point faible.</p>
+            </div>
+        </div>
 
-                        <div style="margin-bottom: 20px;">
-                            <label class="box-title"> Vos Points Faibles (Matières à améliorer)</label>
-                            <select id="select-faibles" class="select-matiere" disabled>
-                                <option value="" disabled selected>Choisissez une matière à ajouter...</option>
-                            </select>
-                            <div class="box-selection" id="zone-faibles">
-                                <p class="placeholder-zone">Aucune matière sélectionnée comme point faible.</p>
-                            </div>
-                        </div>
+    </div>
 
-                    </div>
+    <div class="form-group" style="margin-top: 24px;">
+        <label for="bio">Courte biographie <span style="color: var(--text-muted); font-weight: 400;">(Facultative)</span></label>
+        <textarea class="form-control textarea-custom" id="bio" rows="4" placeholder="Ex: Étudiant passionné cherchant à s'améliorer en développement web..."></textarea>
+    </div>
 
-                    <div class="form-group" style="margin-top: 24px;">
-                        <label for="bio">Courte biographie <span style="color: var(--text-muted); font-weight: 400;">(Facultative)</span></label>
-                        <textarea class="form-control textarea-custom" id="bio" rows="4" placeholder="Ex: Étudiant passionné cherchant à s'améliorer en développement web..."></textarea>
-                    </div>
-
-                    <button class="btn-primary" type="submit" style="margin-top: 24px;">Suivant →</button>
-                </form>
+    <button class="btn-primary" type="submit" style="margin-top: 24px;">Terminer l'inscription →</button>
+</form>
 
                 <div style="text-align: center; margin-top: 20px;">
                     <a href="inscription_etape2.html" class="btn-back">Retour à l'étape précédente</a>
