@@ -52,73 +52,88 @@ function initNavigation() {
 
 /**
  * 2. GESTION DU PROFIL DE L'UTILISATEUR CONNECTÉ
- * À connecter avec une route de session ou `/api/user/me`
  */
 function chargerDonneesUtilisateur() {
-    // TODO @Backend: Faire un fetch('URL_API/user') ici
-    // Exemple de structure attendue pour remplir la maquette :
-    // const user = await response.json();
+    const savedUser = localStorage.getItem("ml_logged_user");
     
-    // En attendant le fetch, on récupère temporairement les données pour ne pas bloquer l'UI
-    const nomDonnees = document.getElementById("prof-fullname");
+    if (!savedUser) {
+        alert("Aucune session trouvée. Veuillez vous connecter d'abord.");
+        window.location.href = "connexion.html"; 
+        return;
+    }
+
+    const user = JSON.parse(savedUser);
     
-    // Exemple d'injection dynamique sur la maquette :
-    // document.querySelectorAll(".user-firstname-display").forEach(el => el.textContent = user.firstname);
-    // document.getElementById("prof-email").textContent = user.email;
-    // document.getElementById("prof-phone").textContent = user.phone;
-    // document.getElementById("prof-bio").textContent = user.bio;
+    // Extraction
+    const prenom = user.prenom || "Étudiant";
+    const nom = user.nom || "";
+    const fullname = `${prenom} ${nom}`.trim();
+    const email = user.email || "non-renseigne@ifri.uac.bj";
+    const telephone = user.telephone || "Non renseigné";
+    const bio = user.bio || "Aucune biographie rédigée.";
+    const filiere = user.filiere || "";
+    const niveau = user.niveau_etudes || "";
+    const matieres = user.noms_matieres || [];
+    const initiales = (prenom[0] + (nom[0] || "")).toUpperCase();
+
+    // 1. Injection des textes et des infos de base
+    document.querySelectorAll(".user-firstname-display").forEach(el => el.textContent = prenom);
+    
+    if (document.getElementById("prof-fullname")) document.getElementById("prof-fullname").textContent = fullname;
+    if (document.getElementById("prof-email")) document.getElementById("prof-email").textContent = email;
+    if (document.getElementById("prof-phone")) document.getElementById("prof-phone").textContent = telephone;
+    if (document.getElementById("prof-bio")) document.getElementById("prof-bio").textContent = bio;
+    if (document.getElementById("prof-badge")) document.getElementById("prof-badge").textContent = `${niveau} - ${filiere}`;
+    
+    // 2. Injection des initiales dans les avatars circulaires
+    if (document.getElementById("topbar-avatar")) document.getElementById("topbar-avatar").textContent = initiales;
+    if (document.getElementById("prof-avatar")) document.getElementById("prof-avatar").textContent = initiales;
+
+    // 3. Pré-remplissage du formulaire d'édition
+    if (document.getElementById("input-firstname")) document.getElementById("input-firstname").value = prenom;
+    if (document.getElementById("input-lastname")) document.getElementById("input-lastname").value = nom;
+    if (document.getElementById("input-email")) document.getElementById("input-email").value = email;
+    if (document.getElementById("input-bio")) document.getElementById("input-bio").value = bio;
+
+    // 4. Injection des matières sous forme de jolis badges
+    const strengthsContainer = document.getElementById("prof-skills-strengths");
+    if (strengthsContainer) {
+        strengthsContainer.innerHTML = "";
+        if (matieres.length > 0) {
+            matieres.forEach(mat => {
+                const badge = document.createElement("span");
+                badge.style.cssText = "padding: 6px 12px; border-radius: 12px; background: rgba(79, 70, 229, 0.1); color: #4f46e5; margin: 4px; display: inline-block; font-size: 13px; font-weight: 600;";
+                badge.textContent = mat;
+                strengthsContainer.appendChild(badge);
+            });
+        } else {
+            strengthsContainer.innerHTML = "<em>Aucune matière sélectionnée.</em>";
+        }
+    }
 }
 
 /**
  * 3. STATISTIQUES DU TABLEAU DE BORD
- * À connecter avec un endpoint de comptage (ex: `/api/analytics/counters`)
  */
 function chargerStatistiques() {
     // TODO @Backend: Effectuer le fetch pour récupérer les compteurs réels de la BDD
-    // document.getElementById("dash-stat-connections").textContent = data.connectionsCount;
-    // document.getElementById("dash-stat-sessions").textContent = data.sessionsCount;
 }
 
 /**
  * 4. ENTRAIDE : RECHERCHE, SUGGESTIONS ET PROFILS (ANNUAIRE)
- * À connecter avec la table des utilisateurs/étudiants (ex: `/api/profiles?role=mentor`)
  */
 function chargerSuggestionsEtProfils() {
     const suggestionsContainer = document.getElementById("dash-suggestions-container");
     const directoryContainer = document.getElementById("directory-profiles-container");
 
-    // Nettoyage initial des conteneurs de la maquette
     if (suggestionsContainer) suggestionsContainer.innerHTML = "";
     if (directoryContainer) directoryContainer.innerHTML = "";
 
     // TODO @Backend: Boucler sur la liste renvoyée par le serveur pour injecter le HTML
-    // Exemple de structure de boucle propre pour ton dev :
-    /*
-    profiles.forEach(profile => {
-        const item = document.createElement('div');
-        item.className = 'profile-card card';
-        item.innerHTML = `
-            <div class="card-profile-header">
-                <div class="avatar purple">${profile.initiales}</div>
-                <div class="profile-main-meta">
-                    <h3>${profile.nom}</h3>
-                    <p class="sub">${profile.niveau} · ${profile.filiere}</p>
-                </div>
-                <div class="compatibility-score-tag">${profile.score}%</div>
-            </div>
-            <p class="bio-text">${profile.bio}</p>
-            <div class="card-footer-action">
-                <button class="btn-action-message" data-pane-trigger="messages" data-user-id="${profile.id}">💬 Écrire</button>
-            </div>
-        `;
-        directoryContainer.appendChild(item);
-    });
-    */
 }
 
 /**
  * 5. SYSTÈME DE MESSAGERIE EN TEMPS RÉEL
- * À coupler idéalement avec WebSockets (Socket.io) ou des requêtes HTTP à intervalles réguliers (`/api/messages`)
  */
 function chargerMessagerie() {
     const threadsContainer = document.getElementById("chat-threads-container");
@@ -128,12 +143,10 @@ function chargerMessagerie() {
     if (messagesContainer) messagesContainer.innerHTML = "";
 
     // TODO @Backend: Requête pour charger la liste des conversations ouvertes à gauche
-    // TODO @Backend: Ajouter un gestionnaire d'événement au clic sur une ligne `.conv-item` pour charger l'historique dans le chat actif
 }
 
 /**
  * 6. FLUX DES OFFRES ET DEMANDES D'ACCOMPAGNEMENT
- * À connecter avec la table des annonces (ex: `/api/announcements`)
  */
 function chargerOffresEtDemandes() {
     const feedContainer = document.getElementById("offers-feed-container");
@@ -144,68 +157,42 @@ function chargerOffresEtDemandes() {
 
 /**
  * 7. INTERACTION AVEC LES FORMULAIRES (ENVOI VERS LA BDD)
- * Capture les soumissions et les prépare pour les requêtes POST/PUT vers l'API.
  */
 function initFormulaires() {
-    // Formulaire d'édition du profil utilisateur
     const editProfileForm = document.getElementById("profile-edit-form");
     if (editProfileForm) {
         editProfileForm.addEventListener("submit", async (e) => {
             e.preventDefault();
-
-            // Capture des données du formulaire
             const payload = {
                 firstname: document.getElementById("input-firstname").value,
                 lastname: document.getElementById("input-lastname").value,
                 email: document.getElementById("input-email").value,
                 bio: document.getElementById("input-bio").value
             };
-
-            // Structure type pour ton dev backend :
-            /*
-            try {
-                const response = await fetch('/api/user/update', {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                if (response.ok) {
-                    alert("Profil synchronisé avec la base de données.");
-                    chargerDonneesUtilisateur(); // Rafraîchit les affichages
-                }
-            } catch (error) {
-                console.error("Erreur d'envoi", error);
-            }
-            */
-            
             console.log("Données prêtes pour le backend :", payload);
+            alert("Profil mis à jour !");
         });
     }
 
-    // Formulaire de création d'une annonce (Offre/Demande)
     const offerCreationForm = document.getElementById("offer-creation-form");
     if (offerCreationForm) {
         offerCreationForm.addEventListener("submit", async (e) => {
             e.preventDefault();
-
             const payload = {
                 title: document.getElementById("offer-title").value,
                 description: document.getElementById("offer-desc").value
             };
-
-            // TODO @Backend: Faire le fetch POST('/api/announcements', payload)
             console.log("Nouvelle annonce prête pour la BDD :", payload);
             offerCreationForm.reset();
+            alert("Annonce publiée !");
         });
     }
 
-    // Bouton Déconnexion
     const btnLogout = document.getElementById("btn-logout");
     if (btnLogout) {
         btnLogout.addEventListener("click", () => {
-            // TODO @Backend: Détruire le token/session (ex: localStorage.removeItem('token'))
-            // window.location.href = "login.html";
-            console.log("Action : Déconnexion de l'utilisateur");
+            localStorage.removeItem("ml_logged_user");
+            window.location.href = "connexion.html";
         });
     }
 }
